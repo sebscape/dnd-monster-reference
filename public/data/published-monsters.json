@@ -1,9 +1,200 @@
 {
   "schema_version": "1.1.0",
-  "catalog_version": "0.1.0",
+  "catalog_version": "0.2.0",
   "source": {
-    "name": "Starter demonstration data",
-    "license": "Demo records only; not an SRD import"
+    "name": "System Reference Document 5.2.1",
+    "url": "https://www.dndbeyond.com/srd",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
+    "attribution": "This work includes material from the System Reference Document 5.2.1 (“SRD 5.2.1”) by Wizards of the Coast LLC, available at https://www.dndbeyond.com/srd. The SRD 5.2.1 is licensed under the Creative Commons Attribution 4.0 International License, available at https://creativecommons.org/licenses/by/4.0/legalcode.",
+    "modifications": "Stat blocks adapted into a JSON schema; some text paraphrased for concise display."
   },
-  "monsters": []
+  "monsters": [
+    {
+      "id": "cf86b7f1-a610-4ca3-b7f3-7ce2c9c8e111",
+      "name": "Giant Rat",
+      "source": {
+        "type": "official_srd",
+        "name": "System Reference Document 5.2.1",
+        "reference": "https://www.dndbeyond.com/srd",
+        "license": "CC BY 4.0"
+      },
+      "timestamp_created": "2026-11-04T00:00:00.000Z",
+      "timestamp_modified": "2026-11-04T00:00:00.000Z",
+      "tags": [],
+      "size": "Small",
+      "type": "Beast",
+      "alignment": "Unaligned",
+      "challenge_rating": "1/8",
+      "proficiency_bonus": 2,
+      "armor_class": 13,
+      "hit_points": 7,
+      "hit_dice": "2d6",
+      "initiative_bonus": 3,
+      "speed": "30 ft., Climb 30 ft.",
+      "abilities": {
+        "str": 7,
+        "dex": 16,
+        "con": 11,
+        "int": 2,
+        "wis": 10,
+        "cha": 4
+      },
+      "skills": "Perception +2",
+      "senses": "Darkvision 60 ft.; Passive Perception 12",
+      "languages": "None",
+      "traits": [
+        {
+          "name": "Pack Tactics",
+          "description": "The rat has advantage on an attack roll against a creature if an ally is within 5 feet of that creature and the ally isn't incapacitated."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Bite",
+          "description": "Melee attack +5, reach 5 ft.; hit: 5 (1d4 + 3) piercing damage."
+        }
+      ]
+    },
+    {
+      "id": "cf86b7f1-a610-4ca3-b7f3-7ce2c9c8e112",
+      "name": "Goblin Minion",
+      "source": {
+        "type": "official_srd",
+        "name": "System Reference Document 5.2.1",
+        "reference": "https://www.dndbeyond.com/srd",
+        "license": "CC BY 4.0"
+      },
+      "timestamp_created": "2026-11-04T00:00:00.000Z",
+      "timestamp_modified": "2026-11-04T00:00:00.000Z",
+      "tags": [],
+      "size": "Small",
+      "type": "Fey (Goblinoid)",
+      "alignment": "Chaotic Neutral",
+      "challenge_rating": "1/8",
+      "proficiency_bonus": 2,
+      "armor_class": 12,
+      "hit_points": 7,
+      "hit_dice": "2d6",
+      "initiative_bonus": 2,
+      "speed": "30 ft.",
+      "abilities": {
+        "str": 8,
+        "dex": 15,
+        "con": 10,
+        "int": 10,
+        "wis": 8,
+        "cha": 8
+      },
+      "skills": "Stealth +6",
+      "senses": "Darkvision 60 ft.; Passive Perception 9",
+      "languages": "Common, Goblin",
+      "actions": [
+        {
+          "name": "Dagger",
+          "description": "Melee or ranged attack +4, reach 5 ft. or range 20/60 ft.; hit: 4 (1d4 + 2) piercing damage."
+        }
+      ],
+      "bonus_actions": [
+        {
+          "name": "Nimble Escape",
+          "description": "The goblin takes the Disengage or Hide action."
+        }
+      ]
+    },
+    {
+      "id": "cf86b7f1-a610-4ca3-b7f3-7ce2c9c8e113",
+      "name": "Skeleton",
+      "source": {
+        "type": "official_srd",
+        "name": "System Reference Document 5.2.1",
+        "reference": "https://www.dndbeyond.com/srd",
+        "license": "CC BY 4.0"
+      },
+      "timestamp_created": "2026-11-04T00:00:00.000Z",
+      "timestamp_modified": "2026-11-04T00:00:00.000Z",
+      "tags": [],
+      "size": "Medium",
+      "type": "Undead",
+      "alignment": "Lawful Evil",
+      "challenge_rating": "1/4",
+      "proficiency_bonus": 2,
+      "armor_class": 14,
+      "hit_points": 13,
+      "hit_dice": "2d8 + 4",
+      "initiative_bonus": 3,
+      "speed": "30 ft.",
+      "abilities": {
+        "str": 10,
+        "dex": 16,
+        "con": 15,
+        "int": 6,
+        "wis": 8,
+        "cha": 5
+      },
+      "damage_vulnerabilities": "Bludgeoning",
+      "damage_immunities": "Poison",
+      "condition_immunities": "Exhaustion, Poisoned",
+      "senses": "Darkvision 60 ft.; Passive Perception 9",
+      "languages": "Understands Common plus one other language but can't speak",
+      "actions": [
+        {
+          "name": "Shortsword",
+          "description": "Melee attack +5, reach 5 ft.; hit: 6 (1d6 + 3) piercing damage."
+        },
+        {
+          "name": "Shortbow",
+          "description": "Ranged attack +5, range 80/320 ft.; hit: 6 (1d6 + 3) piercing damage."
+        }
+      ]
+    },
+    {
+      "id": "cf86b7f1-a610-4ca3-b7f3-7ce2c9c8e114",
+      "name": "Zombie",
+      "source": {
+        "type": "official_srd",
+        "name": "System Reference Document 5.2.1",
+        "reference": "https://www.dndbeyond.com/srd",
+        "license": "CC BY 4.0"
+      },
+      "timestamp_created": "2026-11-04T00:00:00.000Z",
+      "timestamp_modified": "2026-11-04T00:00:00.000Z",
+      "tags": [],
+      "size": "Medium",
+      "type": "Undead",
+      "alignment": "Neutral Evil",
+      "challenge_rating": "1/4",
+      "proficiency_bonus": 2,
+      "armor_class": 8,
+      "hit_points": 15,
+      "hit_dice": "2d8 + 6",
+      "initiative_bonus": -2,
+      "speed": "20 ft.",
+      "abilities": {
+        "str": 13,
+        "dex": 6,
+        "con": 16,
+        "int": 3,
+        "wis": 6,
+        "cha": 5
+      },
+      "saving_throws": "Wis +0",
+      "damage_immunities": "Poison",
+      "condition_immunities": "Exhaustion, Poisoned",
+      "senses": "Darkvision 60 ft.; Passive Perception 8",
+      "languages": "Understands Common plus one other language but can't speak",
+      "traits": [
+        {
+          "name": "Undead Fortitude",
+          "description": "When damage reduces the zombie to 0 HP, it makes a Constitution saving throw (DC 5 + damage taken), unless the damage was radiant or from a critical hit. On success, it drops to 1 HP instead."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Slam",
+          "description": "Melee attack +3, reach 5 ft.; hit: 5 (1d8 + 1) bludgeoning damage."
+        }
+      ]
+    }
+  ]
 }
