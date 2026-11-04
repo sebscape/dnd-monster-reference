@@ -69,7 +69,7 @@ def assemble(record, normalize):
         if len(int_rows) != 1:
             raise ValueError("Young White Dragon Int source row changed; manual review required")
         i = int_rows[0]
-        source_window = " ".join(line.strip() for line in lines[i:i+3])
+        source_window = " ".join(line.strip() for line in lines[i:i+3]).replace("−", "-").replace("–", "-")
         if not re.search(r"Int\s+6\s+-2\s+2(?:\s|$)", source_window):
             raise ValueError("Young White Dragon unsigned save source pattern changed; manual review required: " + repr(source_window))
         abilities["int"] = {"score": 6, "modifier": -2, "save": 2}
