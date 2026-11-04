@@ -80,12 +80,15 @@ def main():
             issues.append(f"{name}: parser notes {notes} / {warnings}")
     lines = ["SRD STAGED SOURCE-FIELD AUDIT — NOT FOR PUBLICATION",
              f"Staged monsters inspected: {checked}",
-             f"Field mismatches: {len(issues)}",\n             "Numeric source fields are converted to integers before comparison.", "",
+             f"Field mismatches: {len(issues)}",
+             "Numeric source fields are converted to integers before comparison.", "",
              "MISMATCHES:", *(issues or ["none"]), "",
              "This checks staging against parsed source excerpts, not against PDF page images.",
              "Ability save interpretation, spellcasting presentation, and source typography require further review.",
              "No published or custom monsters were modified."]
-    OUT.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    OUT.write_text("
+".join(lines) + "
+", encoding="utf-8")
     print(f"Staged monsters inspected: {checked}")
     print(f"Field mismatches: {len(issues)}")
     print(f"Report: {OUT}")
