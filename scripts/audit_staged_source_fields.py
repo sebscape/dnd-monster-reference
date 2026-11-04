@@ -57,7 +57,9 @@ def main():
                                       ("hit_dice","hit_dice")]:
             source_value = header[source_key]
             actual = monster.get(dest_key)
-            if source_key in ("ac", "hp", "initiative", "pb") and source_value is not None:\n                source_value = int(source_value)\n            if source_value != actual:
+            if source_key in ("ac", "hp", "initiative", "pb") and source_value is not None:
+                source_value = int(source_value)
+            if source_value != actual:
                 issues.append(f"{name}: {dest_key} mismatch: source {source_value!r}; staged {actual!r}")
         for source_key, dest_key in [("Skills","skills"),("Senses","senses"),
                                      ("Languages","languages"),("Vulnerabilities","damage_vulnerabilities"),
