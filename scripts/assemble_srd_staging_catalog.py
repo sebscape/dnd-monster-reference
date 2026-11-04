@@ -65,12 +65,12 @@ def assemble(record, normalize):
     # Require the exact source row before applying this staging-only override.
     if name == "Young White Dragon":
         lines = raw.splitlines()
-        int_rows = [i for i, line in enumerate(lines) if re.match(r"^Int\\s+6\\b", line.strip())]
+        int_rows = [i for i, line in enumerate(lines) if re.match(r"^Int\s+6\b", line.strip())]
         if len(int_rows) != 1:
             raise ValueError("Young White Dragon Int source row changed; manual review required")
         i = int_rows[0]
         source_window = " ".join(line.strip() for line in lines[i:i+3])
-        if not re.search(r"Int\\s+6\\s+-2\\s+2(?:\\s|$)", source_window):
+        if not re.search(r"Int\s+6\s+-2\s+2(?:\s|$)", source_window):
             raise ValueError("Young White Dragon unsigned save source pattern changed; manual review required: " + repr(source_window))
         abilities["int"] = {"score": 6, "modifier": -2, "save": 2}
         ability_notes = [note for note in ability_notes if not (note.startswith("Int:") or note == "Missing abilities: Int")]
@@ -115,9 +115,6 @@ def assemble(record, normalize):
             saves.append(k.title() + " " + f"{entry['save']:+d}")
     if saves:
         monster["saving_throws"] = ", ".join(saves)
-    if name == "Young White Dragon":
-        monster["source"]["reference"] = SOURCE_INFO["reference"]
-        # Interpretation documented in the staging report below, not in stat text.
     for source, target in (
         ("Skills","skills"), ("Senses","senses"), ("Languages","languages"),
         ("Vulnerabilities","damage_vulnerabilities"),
