@@ -36,6 +36,9 @@ def parse_abilities(record):
                 break
             if re.fullmatch(r"(?:[+-]\d+)(?:\s+[+-]\d+)*", following):
                 parts.extend(SIGNED.findall(following))
+            elif re.fullmatch(r"\\d+", following):
+                issues.append(f"{label}: unsigned standalone value {following!r} at line {j + 1}; possible lost sign; manual PDF review required")
+                break
             else:
                 break
             j += 1
