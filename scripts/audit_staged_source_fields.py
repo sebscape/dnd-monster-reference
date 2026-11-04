@@ -57,7 +57,7 @@ def main():
                                       ("hit_dice","hit_dice")]:
             source_value = header[source_key]
             actual = monster.get(dest_key)
-            if str(source_value) != str(actual) and not (source_value is None and actual is None):
+            if source_key in ("ac", "hp", "initiative", "pb") and source_value is not None:\n                source_value = int(source_value)\n            if source_value != actual:
                 issues.append(f"{name}: {dest_key} mismatch: source {source_value!r}; staged {actual!r}")
         for source_key, dest_key in [("Skills","skills"),("Senses","senses"),
                                      ("Languages","languages"),("Vulnerabilities","damage_vulnerabilities"),
@@ -78,7 +78,7 @@ def main():
             issues.append(f"{name}: parser notes {notes} / {warnings}")
     lines = ["SRD STAGED SOURCE-FIELD AUDIT — NOT FOR PUBLICATION",
              f"Staged monsters inspected: {checked}",
-             f"Field mismatches: {len(issues)}", "",
+             f"Field mismatches: {len(issues)}",\n             "Numeric source fields are converted to integers before comparison.", "",
              "MISMATCHES:", *(issues or ["none"]), "",
              "This checks staging against parsed source excerpts, not against PDF page images.",
              "Ability save interpretation, spellcasting presentation, and source typography require further review.",
