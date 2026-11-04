@@ -7,3 +7,4 @@ custom-monsters.json
 **/custom-monsters.json
 private-artwork/
 *.local
+staging/
