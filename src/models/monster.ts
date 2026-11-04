@@ -23,7 +23,7 @@ export function newMonster(base?: Monster): Monster {
   const now = new Date().toISOString();
   const cloned = base ? structuredClone(base) : {};
   return {
-    name: "", size: "Medium", type: "Beast", challenge_rating: "0",
+    size: "Medium", type: "Beast", challenge_rating: "0",
     armor_class: 10, hit_points: 1, initiative_bonus: 0, speed: "30 ft.",
     abilities: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
     traits: [], actions: [], bonus_actions: [], reactions: [], legendary_actions: [],
