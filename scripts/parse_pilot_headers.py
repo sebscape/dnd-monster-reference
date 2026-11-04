@@ -22,7 +22,7 @@ def parse(record):
     ac = match(r"^AC\s+(\d+)", text)
     hp = match(r"^HP\s+(\d+)", text)
     hit_dice = match(r"^HP\s+\d+\s+\(([^)]+)\)", text)
-    initiative = match(r"^Initiative\s+([+-]?\d+)", text)
+    initiative = match(r"^\s*Initiative\s+([+-]?\d+)", text)
     speed = match(r"^Speed\s+(.+)$", text)
     cr = match(r"^CR\s+(\d+/\d+|\d+)", text)
     pb = match(r"^CR\s+[^\n]*?PB\s+([+]?[0-9]+)", text)
