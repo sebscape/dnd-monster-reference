@@ -8,3 +8,6 @@ custom-monsters.json
 private-artwork/
 *.local
 staging/
+
+# Local preview catalog; never commit as the published catalog
+public/data/published-monsters-preview.json
