@@ -4,7 +4,7 @@ import { ABILITY_KEYS, isMonster, newMonster, SCHEMA_VERSION } from "./models/mo
 
 const LOCAL_KEY = "dnd-monster-reference-custom-v1";
 const FEATURE_KEYS = ["traits", "actions", "bonus_actions", "reactions", "legendary_actions", "spellcasting"] as const;
-const TEXT_KEYS = ["alignment", "armor_description", "hit_dice", "speed", "saving_throws", "skills", "damage_vulnerabilities", "damage_resistances", "damage_immunities", "condition_immunities", "senses", "languages"] as const;
+const TEXT_KEYS = ["alignment", "armor_description", "hit_dice", "speed", "saving_throws", "skills", "damage_vulnerabilities", "damage_resistances", "damage_immunities", "condition_immunities", "senses", "languages", "gear", "legendary_actions_intro"] as const;
 function readCustom(): Monster[] {
   try {
     const data: unknown = JSON.parse(localStorage.getItem(LOCAL_KEY) ?? "[]");
@@ -29,6 +29,7 @@ const searchableText = (m: Monster): string => [
   m.name, m.size, m.type, m.challenge_rating, m.alignment, m.speed,
   m.saving_throws, m.skills, m.senses, m.languages, m.damage_vulnerabilities,
   m.damage_resistances, m.damage_immunities, m.condition_immunities,
+  m.gear, m.legendary_actions_intro,
   m.source.name, ...m.tags,
   ...FEATURE_KEYS.flatMap(k => (m[k] ?? []).flatMap(f => [f.name, f.description]))
 ].filter(Boolean).join(" ").toLocaleLowerCase();
