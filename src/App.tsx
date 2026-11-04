@@ -17,6 +17,21 @@ function downloadJson(name: string, data: unknown) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 const titleCase = (s: string) => s.replaceAll("_", " ").replace(/\b\w/g, c => c.toUpperCase());
+const crValue = (cr: string): number => {
+  const text = cr.trim();
+  if (/^\d+\/\d+$/.test(text)) {
+    const [numerator, denominator] = text.split("/").map(Number);
+    return denominator > 0 ? numerator / denominator : NaN;
+  }
+  return text !== "" && Number.isFinite(Number(text)) ? Number(text) : NaN;
+};
+const searchableText = (m: Monster): string => [
+  m.name, m.size, m.type, m.challenge_rating, m.alignment, m.speed,
+  m.saving_throws, m.skills, m.senses, m.languages, m.damage_vulnerabilities,
+  m.damage_resistances, m.damage_immunities, m.condition_immunities,
+  m.source.name, ...m.tags,
+  ...FEATURE_KEYS.flatMap(k => (m[k] ?? []).flatMap(f => [f.name, f.description]))
+].filter(Boolean).join(" ").toLocaleLowerCase();
 const modifier = (n: number) => { const m = Math.floor((n - 10) / 2); return (m >= 0 ? "+" : "") + m; };
 function FeatureEditor({ label, features, onChange }: { label: string; features: NamedFeature[]; onChange: (v: NamedFeature[]) => void }) {
   return <fieldset><legend>{label}</legend>{features.map((f, i) => <div className="feature-edit" key={i}>
@@ -73,6 +88,11 @@ export default function App() {
   const [published, setPublished] = useState<Monster[]>([]);
   const [custom, setCustom] = useState<Monster[]>(readCustom);
   const [query, setQuery] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [tagFilter, setTagFilter] = useState("all");
+  const [minCr, setMinCr] = useState("");
+  const [maxCr, setMaxCr] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editing, setEditing] = useState<Monster | null>(null);
   const [error, setError] = useState("");
@@ -82,10 +102,27 @@ export default function App() {
       .catch(e => setError(String(e)));
   }, []);
   useEffect(() => { try { localStorage.setItem(LOCAL_KEY, JSON.stringify(custom)); } catch { setError("Local save failed. Export your custom JSON backup immediately."); } }, [custom]);
-  const monsters = useMemo(() => [...published, ...custom].filter(m =>
-    [m.name, m.type, m.challenge_rating, ...m.tags].some(v => v.toLowerCase().includes(query.toLowerCase()))
-  ).sort((a,b) => a.name.localeCompare(b.name)), [published, custom, query]);
-  const selected = [...published, ...custom].find(m => m.id === selectedId) ?? null;
+  const allMonsters = useMemo(() => [...published, ...custom], [published, custom]);
+  const types = useMemo(() => [...new Set(allMonsters.map(m => m.type))].sort((a, b) => a.localeCompare(b)), [allMonsters]);
+  const tags = useMemo(() => [...new Set(allMonsters.flatMap(m => m.tags))].sort((a, b) => a.localeCompare(b)), [allMonsters]);
+  const monsters = useMemo(() => allMonsters.filter(m => {
+    if (sourceFilter === "published" && m.source.type === "homebrew") return false;
+    if (sourceFilter === "custom" && m.source.type !== "homebrew") return false;
+    if (typeFilter !== "all" && m.type !== typeFilter) return false;
+    if (tagFilter !== "all" && !m.tags.includes(tagFilter)) return false;
+    const cr = crValue(m.challenge_rating);
+    if (minCr !== "" && !(cr >= crValue(minCr))) return false;
+    if (maxCr !== "" && !(cr <= crValue(maxCr))) return false;
+    const words = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
+    return words.every(word => searchableText(m).includes(word));
+  }).sort((a,b) => a.name.localeCompare(b.name)),
+  [allMonsters, sourceFilter, typeFilter, tagFilter, minCr, maxCr, query]);
+  const filtersActive = Boolean(query || sourceFilter !== "all" || typeFilter !== "all" || tagFilter !== "all" || minCr || maxCr);
+  function resetFilters() {
+    setQuery(""); setSourceFilter("all"); setTypeFilter("all");
+    setTagFilter("all"); setMinCr(""); setMaxCr("");
+  }
+  const selected = allMonsters.find(m => m.id === selectedId) ?? null;
   function saveCustom(monster: Monster) {
     setCustom(prev => prev.some(m => m.id === monster.id) ? prev.map(m => m.id === monster.id ? monster : m) : [...prev, monster]);
     setSelectedId(monster.id); setEditing(null); setError("");
@@ -111,8 +148,18 @@ export default function App() {
       <button onClick={() => setEditing(newMonster())}>+ New custom monster</button>
       <button onClick={() => downloadJson("custom-monsters.json", { schema_version: SCHEMA_VERSION, monsters: custom })}>Export custom JSON</button>
       <label className="upload">Import custom JSON<input type="file" accept=".json,application/json" onChange={e => { void importCustom(e.target.files?.[0]); e.target.value = ""; }} /></label></div>
+    <section className="filter-panel" aria-label="Monster filters">
+      <div className="filter-fields">
+        <label>Source<select value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}><option value="all">All sources</option><option value="published">Published</option><option value="custom">Custom</option></select></label>
+        <label>Creature type<select value={typeFilter} onChange={e => setTypeFilter(e.target.value)}><option value="all">All types</option>{types.map(t => <option key={t} value={t}>{t}</option>)}</select></label>
+        <label>Tag<select value={tagFilter} onChange={e => setTagFilter(e.target.value)}><option value="all">All tags</option>{tags.map(t => <option key={t} value={t}>{t}</option>)}</select></label>
+        <label>Minimum CR<input aria-label="Minimum challenge rating" placeholder="e.g. 1/8" value={minCr} onChange={e => setMinCr(e.target.value)} /></label>
+        <label>Maximum CR<input aria-label="Maximum challenge rating" placeholder="e.g. 2" value={maxCr} onChange={e => setMaxCr(e.target.value)} /></label>
+      </div>
+      <div className="filter-summary"><span role="status">Showing <strong>{monsters.length}</strong> of <strong>{allMonsters.length}</strong> monsters</span><button type="button" disabled={!filtersActive} onClick={resetFilters}>Reset filters</button></div>
+    </section>
     {error && <p role="alert" className="error">{error}</p>}
-    <div className="layout"><section className="list"><h2>Monsters</h2>{monsters.length === 0 && <p className="muted">No monsters found. The published catalog is intentionally empty until licensed SRD records are imported. Create a custom monster to begin.</p>}
+    <div className="layout"><section className="list"><h2>Monsters</h2>{monsters.length === 0 && <p className="muted">{allMonsters.length === 0 ? "No monsters in the catalog. Create a custom monster to begin." : "No monsters match the current filters."}</p>}
       {monsters.map(m => <button key={m.id} className={"monster " + (selectedId === m.id ? "active" : "")} onClick={() => { setSelectedId(m.id); setEditing(null); }}><strong>{m.name}</strong><small>{m.type} · CR {m.challenge_rating} · {m.source.type === "homebrew" ? "Custom" : "Published"}</small></button>)}</section>
       <section className="detail">{editing ? <Editor key={editing.id} initial={editing} onSave={saveCustom} onCancel={() => setEditing(null)} /> : selected ? <Detail monster={selected} onEdit={() => setEditing(selected)} onCopy={() => setEditing(newMonster(selected))} onDelete={() => deleteCustom(selected)} /> : <p className="muted">Select a monster to inspect its record, or create a custom monster.</p>}</section></div>
     <footer>Custom records are saved in this browser. Export custom JSON regularly for backup. Published definitions remain read-only.</footer>
