@@ -28,6 +28,8 @@ def parse(record):
     section = None
     current = None
     paragraph_start = True
+    preambles = {}
+    collecting_preamble = False
     for raw in lines[cr + 1:]:
         line = raw.strip()
         if line in SECTIONS:
@@ -35,12 +37,24 @@ def parse(record):
             sections.setdefault(section, [])
             current = None
             paragraph_start = True
+            collecting_preamble = False
             continue
         if not section:
             continue
         if not line:
             paragraph_start = True
             continue
+        if section == "Legendary Actions" and PREAMBLE.match(line):
+            preambles[section] = line
+            collecting_preamble = True
+            paragraph_start = False
+            continue
+        if collecting_preamble:
+            if paragraph_start:
+                collecting_preamble = False
+            else:
+                preambles[section] += " " + line
+                continue
         candidate = FEATURE_START.match(line) if paragraph_start else None
         if candidate and not PREAMBLE.match(line):
             name, description = candidate.groups()
@@ -52,7 +66,7 @@ def parse(record):
         else:
             warnings.append(f"{section}: unassigned text: {line[:100]}")
         paragraph_start = False
-    return sections, warnings
+    return sections, preambles, warnings
 
 def main():
     data = json.loads(SOURCE.read_text(encoding="utf-8"))
@@ -62,10 +76,12 @@ def main():
     for name in PILOTS:
         if name not in by_name:
             raise SystemExit(f"Missing pilot {name}")
-        sections, warnings = parse(by_name[name])
+        sections, preambles, warnings = parse(by_name[name])
         out.append(f"=== {name} ===")
         for section, features in sections.items():
             out.append(f"  {section} ({len(features)}):")
+            if section in preambles:
+                out.append(f"    Section rules: {preambles[section]}")
             for feature in features:
                 out.append(f"    - {feature['name']}: {feature['description'][:180]}")
         out.append(f"  Warnings ({len(warnings)}):")
