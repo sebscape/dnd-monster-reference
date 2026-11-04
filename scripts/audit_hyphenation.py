@@ -48,5 +48,3 @@ print(f"Distinct candidates: {len(counts)}")
 print(f"Report: {output}")
 print("No published or custom monsters were modified.")
 
-if __name__ == "__main__":
-    main()
