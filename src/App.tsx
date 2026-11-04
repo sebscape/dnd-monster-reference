@@ -98,7 +98,9 @@ export default function App() {
   const [editing, setEditing] = useState<Monster | null>(null);
   const [error, setError] = useState("");
   useEffect(() => {
-    fetch("/data/published-monsters.json").then(r => { if (!r.ok) throw new Error("Catalog could not be loaded"); return r.json(); })
+    const preview = new URLSearchParams(window.location.search).get("catalog") === "preview";
+    const catalogUrl = preview ? "/data/published-monsters-preview.json" : "/data/published-monsters.json";
+    fetch(catalogUrl).then(r => { if (!r.ok) throw new Error("Catalog could not be loaded: " + catalogUrl); return r.json(); })
       .then((data: MonsterCatalog) => setPublished(Array.isArray(data.monsters) ? data.monsters.filter(isMonster) : []))
       .catch(e => setError(String(e)));
   }, []);
