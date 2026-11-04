@@ -34,6 +34,15 @@ const searchableText = (m: Monster): string => [
   ...FEATURE_KEYS.flatMap(k => (m[k] ?? []).flatMap(f => [f.name, f.description]))
 ].filter(Boolean).join(" ").toLocaleLowerCase();
 const modifier = (n: number) => { const m = Math.floor((n - 10) / 2); return (m >= 0 ? "+" : "") + m; };
+
+const SPELL_FREQUENCY = /(?=At Will:|\b\d+\/Day(?: Each)?:)/g;
+function FeatureDescription({ feature }: { feature: NamedFeature }) {
+  if (feature.name !== "Spellcasting") return <>{feature.description}</>;
+  const parts = feature.description.split(SPELL_FREQUENCY).filter(Boolean);
+  if (parts.length < 2) return <>{feature.description}</>;
+  return <>{parts.map((part, i) => <span key={i} style={{ display: "block", marginTop: i ? "0.35rem" : undefined }}>{part.trim()}</span>)}</>;
+}
+
 function FeatureEditor({ label, features, onChange }: { label: string; features: NamedFeature[]; onChange: (v: NamedFeature[]) => void }) {
   return <fieldset><legend>{label}</legend>{features.map((f, i) => <div className="feature-edit" key={i}>
     <input aria-label={label + " name " + (i + 1)} placeholder="Feature name" value={f.name} onChange={e => onChange(features.map((x, j) => j === i ? { ...x, name: e.target.value } : x))} />
@@ -79,7 +88,7 @@ function Detail({ monster, onEdit, onCopy, onDelete }: { monster: Monster; onEdi
     {monster.speed && <p><b>Speed:</b> {monster.speed}</p>}
     {monster.abilities && <div className="abilities ability-display">{ABILITY_KEYS.map(k => <div key={k}><b>{k.toUpperCase()}</b><span>{monster.abilities![k]} ({modifier(monster.abilities![k])})</span></div>)}</div>}
     {TEXT_KEYS.filter(k => k !== "speed").map(k => monster[k] ? <p key={k}><b>{titleCase(k)}:</b> {monster[k]}</p> : null)}
-    {FEATURE_KEYS.map(k => (monster[k]?.length ?? 0) > 0 && <section key={k}><h3>{titleCase(k)}</h3>{monster[k]?.map((f, i) => <p key={i}><b>{f.name}.</b> {f.description}</p>)}</section>)}
+    {FEATURE_KEYS.map(k => (monster[k]?.length ?? 0) > 0 && <section key={k}><h3>{titleCase(k)}</h3>{monster[k]?.map((f, i) => <p key={i}><b>{f.name}.</b> <FeatureDescription feature={f} /></p>)}</section>)}
     <p><b>Tags:</b> {monster.tags.join(", ") || "None"}</p><p><b>Source:</b> {monster.source.name}</p>
     <p className="muted">UUID: {monster.id}</p>
     <div className="actions">{custom ? <><button onClick={onEdit}>Edit</button><button className="danger" onClick={onDelete}>Delete</button></> : <button onClick={onCopy}>Create editable copy</button>}</div>
