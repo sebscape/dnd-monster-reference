@@ -9,6 +9,7 @@ export interface Monster {
   saving_throws?: string; skills?: string; damage_vulnerabilities?: string;
   damage_resistances?: string; damage_immunities?: string;
   condition_immunities?: string; senses?: string; languages?: string;
+  gear?: string; legendary_actions_intro?: string;
   traits?: NamedFeature[]; actions?: NamedFeature[]; bonus_actions?: NamedFeature[];
   reactions?: NamedFeature[]; legendary_actions?: NamedFeature[];
   spellcasting?: NamedFeature[]; tags: string[];
@@ -17,7 +18,7 @@ export interface Monster {
   timestamp_created: string; timestamp_modified: string;
 }
 export interface MonsterCatalog { schema_version: string; catalog_version?: string; monsters: Monster[]; }
-export const SCHEMA_VERSION = "1.1.0";
+export const SCHEMA_VERSION = "1.2.0";
 export const ABILITY_KEYS = ["str", "dex", "con", "int", "wis", "cha"] as const;
 export function newMonster(base?: Monster): Monster {
   const now = new Date().toISOString();
@@ -49,6 +50,8 @@ export function isMonster(value: unknown): value is Monster {
     && !!m.source && ["homebrew", "official_srd", "third_party"].includes(m.source.type)
     && typeof m.source.name === "string"
     && typeof m.timestamp_created === "string" && typeof m.timestamp_modified === "string"
+    && (m.gear === undefined || typeof m.gear === "string")
+    && (m.legendary_actions_intro === undefined || typeof m.legendary_actions_intro === "string")
     && (!m.abilities || ABILITY_KEYS.every(k => Number.isFinite(m.abilities?.[k])))
     && (["traits", "actions", "bonus_actions", "reactions", "legendary_actions", "spellcasting"] as const)
       .every(k => !m[k] || (Array.isArray(m[k]) && m[k].every(f => typeof f.name === "string" && typeof f.description === "string")));
