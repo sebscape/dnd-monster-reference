@@ -23,7 +23,7 @@ def main():
     parser.add_argument("--out", type=Path, default=Path("staging/srd-5.2.1"))
     args = parser.parse_args()
     try:
-        import fitz
+        import pymupdf
     except ImportError as exc:
         raise SystemExit("Install PyMuPDF first: python -m pip install pymupdf") from exc
     args.out.mkdir(parents=True, exist_ok=True)
@@ -35,7 +35,7 @@ def main():
             pdf.write_bytes(response.read())
     if pdf.read_bytes()[:4] != b"%PDF":
         raise SystemExit("Source file is not a PDF")
-    doc = fitz.open(pdf)
+    doc = pymupdf.open(pdf)
     pages = []
     for index, page in enumerate(doc):
         pages.append({"pdf_page": index + 1, "text": page.get_text("text", sort=True)})
