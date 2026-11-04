@@ -13,7 +13,49 @@ page_header = re.compile(r"^=+ PDF PAGE [0-9]+ \| INDEX: .* =+$")
 column_marker = re.compile(r"^-+ (LEFT|RIGHT) -+$")
 footer = "System Reference Document 5.2.1"
 
-def clean(raw, following_name):
+AUDITED_TAIL_HEADINGS = {
+    "Air Elemental": "Animated Objects",
+    "Assassin": "Awakened Plants",
+    "Axe Beak": "Azer",
+    "Balor": "Bandits",
+    "Berserker": "Black Dragons",
+    "Blink Dog": "Blue Dragons",
+    "Bone Devil": "Brass Dragons",
+    "Ancient Brass Dragon": "Bronze Dragons",
+    "Ancient Bronze Dragon": "Bugbears",
+    "Bulette": "Centaur",
+    "Commoner": "Copper Dragons",
+    "Couatl": "Crawling Claw",
+    "Swarm of Crawling Claws": "Cultists",
+    "Frost Giant": "Fungi",
+    "Gladiator": "Gnoll",
+    "Gnoll Warrior": "Goblins",
+    "Goblin Boss": "Gold Dragons",
+    "Gray Ooze": "Green Dragons",
+    "Guardian Naga": "Guards",
+    "Hippogriff": "Hobgoblins",
+    "Knight": "Kobold",
+    "Lich": "Mages",
+    "Medusa": "Mephits",
+    "Steam Mephit": "Merfolk",
+    "Minotaur of Baphomet": "Mummies",
+    "Phase Spider": "Pirates",
+    "Planetar": "Priests",
+    "Rakshasa": "Red Dragons",
+    "Rust Monster": "Sahuagin",
+    "Shield Guardian": "Silver Dragons",
+    "Ancient Silver Dragon": "Skeletons",
+    "Specter": "Sphinxes",
+    "Tarrasque": "Toughs",
+    "Unicorn": "Vampires",
+    "Vrock": "Warriors",
+    "Werewolf": "White Dragons",
+    "Xorn": "Zombies",
+    "Ogre Zombie": "Animals",
+}
+
+
+def clean(raw, following_name, current_name):
     kept = []
     removed = []
     for line in raw.splitlines():
@@ -35,6 +77,10 @@ def clean(raw, following_name):
         kept.pop()
     if following_name and kept and kept[-1].strip() == following_name:
         removed.append({"reason": "next monster heading", "text": kept.pop().strip()})
+    # Group headings at the end of the preceding excerpt are PDF navigation text.
+    # Remove only the explicitly audited 38 headings, keyed by current monster.
+    if current_name in AUDITED_TAIL_HEADINGS and kept and kept[-1].strip() == AUDITED_TAIL_HEADINGS[current_name]:
+        removed.append({"reason": "audited next group heading", "text": kept.pop().strip()})
     return "\n".join(kept).strip(), removed
 
 def main():
@@ -47,7 +93,7 @@ def main():
     failed = []
     for index, record in enumerate(records):
         following = records[index + 1]["name"] if index + 1 < len(records) else None
-        cleaned, removed = clean(record["raw_excerpt"], following)
+        cleaned, removed = clean(record["raw_excerpt"], following, record["name"])
         for item in removed:
             reason = item["reason"]
             counts[reason] = counts.get(reason, 0) + 1
