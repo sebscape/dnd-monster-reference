@@ -59,6 +59,23 @@ def assemble(record, normalize):
     record = dict(record, cleaned_excerpt=raw)
     header = parse_header(record)
     abilities, ability_notes = parse_abilities(record)
+    # SRD 5.2.1 printed page 340 shows Young White Dragon Int 6,
+    # modifier -2, and unsigned save "2". Treat +2 as an explicitly
+    # documented editorial interpretation, never as verified source text.
+    # Require the exact source row before applying this staging-only override.
+    if name == "Young White Dragon":
+        lines = raw.splitlines()
+        int_rows = [i for i, line in enumerate(lines) if re.match(r"^Int\\s+6\\b", line.strip())]
+        if len(int_rows) != 1:
+            raise ValueError("Young White Dragon Int source row changed; manual review required")
+        i = int_rows[0]
+        source_window = " ".join(line.strip() for line in lines[i:i+3])
+        if not re.search(r"Int\\s+6\\s+-2\\s+2(?:\\s|$)", source_window):
+            raise ValueError("Young White Dragon unsigned save source pattern changed; manual review required: " + repr(source_window))
+        abilities["int"] = {"score": 6, "modifier": -2, "save": 2}
+        ability_notes = [note for note in ability_notes if not (note.startswith("Int:") or note == "Missing abilities: Int")]
+        if ability_notes:
+            raise ValueError("Young White Dragon has additional ability issues: " + "; ".join(ability_notes))
     secondary, secondary_notes = parse_secondary(record)
     sections, preambles, feature_notes = parse_features(record)
     notes = ability_notes + secondary_notes + feature_notes
@@ -98,6 +115,9 @@ def assemble(record, normalize):
             saves.append(k.title() + " " + f"{entry['save']:+d}")
     if saves:
         monster["saving_throws"] = ", ".join(saves)
+    if name == "Young White Dragon":
+        monster["source"]["reference"] = SOURCE_INFO["reference"]
+        # Interpretation documented in the staging report below, not in stat text.
     for source, target in (
         ("Skills","skills"), ("Senses","senses"), ("Languages","languages"),
         ("Vulnerabilities","damage_vulnerabilities"),
@@ -142,7 +162,11 @@ def main():
     lines.extend(f"  {name}: {reason}" for name, reason in excluded)
     if not excluded:
         lines.append("  none")
-    lines += ["", "IMPORTANT: this is a structural assembly, not a verified transcription.",
+    lines += ["", "DOCUMENTED SOURCE INTERPRETATION:",
+              "Young White Dragon (SRD 5.2.1 printed page 340): Int 6, modifier -2, save printed as unsigned 2.",
+              "Staging interprets the unsigned save as +2; this is an editorial interpretation, NOT a signed value in the PDF.",
+              "The source pattern is checked explicitly; unexpected changes stop assembly for this monster.",
+              "", "IMPORTANT: this is a structural assembly, not a verified transcription.",
               "Check source stat blocks, saving throws, armor text, spellcasting, and feature rendering.",
               "Published and custom catalogs were not modified."]
     REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
