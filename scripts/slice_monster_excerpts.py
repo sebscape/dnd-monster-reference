@@ -33,9 +33,9 @@ def main():
         # Keep page/column markers for review, but flag missing stat signals.
         checks = {
             "name_at_start": excerpt.lstrip().startswith(b["name"]),
-            "has_ac": bool(re.search(r"(?m)^AC\\s+\\d+", excerpt)),
-            "has_hp": bool(re.search(r"(?m)^HP\\s+\\d+", excerpt)),
-            "has_cr": bool(re.search(r"(?m)^CR\\s+(?:\\d+/\\d+|\\d+)", excerpt)),
+            "has_ac": bool(re.search(r"(?m)^AC\s+\d+", excerpt)),
+            "has_hp": bool(re.search(r"(?m)^HP\s+\d+", excerpt)),
+            "has_cr": bool(re.search(r"(?m)^CR\s+(?:\d+/\d+|\d+)", excerpt)),
         }
         if not all(checks.values()):
             anomalies.append({"name": b["name"], "checks": checks})
