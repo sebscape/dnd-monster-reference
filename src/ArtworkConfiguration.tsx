@@ -122,8 +122,12 @@ export default function ArtworkConfiguration({ onClose }: { onClose: () => void 
     <div className="fields">
       <label>AI Provider<select value={settings.provider} onChange={e => setSettings(s => ({ ...s, provider: e.target.value }))}><option value="OpenAI">OpenAI</option><option value="Other">Other (future integration)</option></select></label>
       <label>Image model (optional)<input value={settings.model} placeholder="Configured when API integration is added" onChange={e => setSettings(s => ({ ...s, model: e.target.value }))} /></label>
-      <div><strong>API Token:</strong> {settings.encryptedToken ? "Encrypted token saved" : "Not configured"}</div>
-      {settings.encryptedToken && !replaceToken ? <div className="actions"><button type="button" onClick={() => setReplaceToken(true)}>Replace API token / reset password</button><button type="button" onClick={clearToken}>Remove token</button></div> : <>
+      {settings.encryptedToken && !replaceToken ? <>
+        <label>API Token<input type="password" value="************" readOnly aria-label="API Token saved (masked placeholder)" title="Encrypted token saved; displayed bullets are placeholders" /></label>
+        <label>Encryption password<input type="password" value="************" readOnly aria-label="Encryption password configured (masked placeholder)" title="Password is not stored; displayed bullets are placeholders" /></label>
+        <label>Confirm encryption password<input type="password" value="************" readOnly aria-label="Encryption password confirmation (masked placeholder)" title="Password is not stored; displayed bullets are placeholders" /></label>
+        <div className="actions"><button type="button" onClick={() => setReplaceToken(true)}>Replace API token / reset password</button><button type="button" onClick={clearToken}>Remove token</button></div>
+      </> : <>
         <label>{settings.encryptedToken ? "Replacement API Token" : "API Token"}<input type="password" autoComplete="off" value={token} onChange={e => setToken(e.target.value)} placeholder="Enter API token" /></label>
         <label>Encryption password (minimum 12 characters)<input type="password" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} /></label>
         <label>Confirm encryption password<input type="password" autoComplete="new-password" value={confirmation} onChange={e => setConfirmation(e.target.value)} /></label>
