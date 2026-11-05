@@ -172,11 +172,14 @@ export default function App() {
   }
   return <main>
     <header><div><h1>D&D Monster Reference</h1><p>Published catalog + private custom monsters</p></div><div style={{ display: "flex", alignItems: "center", gap: 16 }}><span className="count">{published.length} published · {custom.length} custom</span><button type="button" aria-label={showConfiguration ? "Return to monsters" : "App Configuration"} title={showConfiguration ? "Return to monsters" : "App Configuration"} aria-pressed={showConfiguration} onClick={() => { setShowConfiguration(v => !v); setEditing(null); }} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: 8, width: 40, height: 40 }}><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06-1.87 1.87-.06-.06A1.7 1.7 0 0 0 16 18.4a1.7 1.7 0 0 0-1 .98V21h-6v-1.62a1.7 1.7 0 0 0-1-.98 1.7 1.7 0 0 0-1.87.34l-.06.06-1.87-1.87.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.98-1H2v-4h1.62a1.7 1.7 0 0 0 .98-1 1.7 1.7 0 0 0-.34-1.87L4.2 7.07 6.07 5.2l.06.06A1.7 1.7 0 0 0 8 5.6a1.7 1.7 0 0 0 1-.98V3h6v1.62a1.7 1.7 0 0 0 1 .98 1.7 1.7 0 0 0 1.87-.34l.06-.06 1.87 1.87-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 .98 1H22v4h-1.62a1.7 1.7 0 0 0-.98 1Z"/></svg></button></div></header>
-    <div className="toolbar"><input aria-label="Search monsters" placeholder="Search name, type, CR, tags…" value={query} onChange={e => setQuery(e.target.value)} />
-      <button onClick={() => { setShowConfiguration(false); setEditing(newMonster()); }}>+ New custom monster</button>
-      <button onClick={() => downloadJson("custom-monsters.json", { schema_version: SCHEMA_VERSION, monsters: custom })}>Export custom JSON</button>
-      <label className="upload">Import custom JSON<input type="file" accept=".json,application/json" onChange={e => { void importCustom(e.target.files?.[0]); e.target.value = ""; }} /></label></div>
-    {showConfiguration ? <ArtworkConfiguration onClose={() => setShowConfiguration(false)} /> : <>
+    {!showConfiguration && <div className="toolbar"><input aria-label="Search monsters" placeholder="Search name, type, CR, tags…" value={query} onChange={e => setQuery(e.target.value)} /></div>}
+    {showConfiguration ? <ArtworkConfiguration
+      onClose={() => setShowConfiguration(false)}
+      onNewMonster={() => { setShowConfiguration(false); setEditing(newMonster()); }}
+      onExportCustom={() => downloadJson("custom-monsters.json", { schema_version: SCHEMA_VERSION, monsters: custom })}
+      onImportCustom={file => { void importCustom(file); }}
+      customError={error}
+    /> : <>
     <section className="filter-panel" aria-label="Monster filters">
       <div className="filter-fields">
         <label>Source<select value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}><option value="all">All sources</option><option value="published">Published</option><option value="custom">Custom</option></select></label>
