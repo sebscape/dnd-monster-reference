@@ -133,10 +133,19 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
   const prompt = monsterPrompt(monster, extra);
   return <section aria-label="Monster artwork" className="artwork-panel">
     <h3>Monster artwork</h3>
-    {approved ? <><img src={approved.dataUrl} alt={monster.name + " approved illustration"} style={{ maxWidth: "100%", maxHeight: 320, objectFit: "contain" }} /><p className="muted">Approved local artwork · {new Date(approved.approvedAt).toLocaleDateString()}</p></> :
-      publishedUrl ? <img src={publishedUrl} alt={monster.name + " published illustration"} style={{ maxWidth: "100%", maxHeight: 320, objectFit: "contain" }} /> :
-      <p className="muted">No artwork approved yet.</p>}
-    <div className="actions"><button type="button" onClick={() => setShowPrompt(v => !v)}>{showPrompt ? "Hide artwork workflow" : "Generate / import artwork"}</button></div>
+    <button
+      type="button"
+      aria-label={showPrompt ? "Hide artwork workflow for " + monster.name : "Open artwork workflow for " + monster.name}
+      aria-expanded={showPrompt}
+      onClick={() => setShowPrompt(v => !v)}
+      title={showPrompt ? "Hide artwork workflow" : "Click to add or change artwork"}
+      style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", maxWidth: 320, aspectRatio: "1 / 2", border: "1px solid #9ca3af", borderRadius: 8, background: "transparent", color: "inherit", cursor: "pointer", padding: 12, overflow: "hidden" }}
+    >
+      {approved || publishedUrl
+        ? <img src={approved?.dataUrl ?? publishedUrl} alt={monster.name + " artwork"} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+        : <span style={{ textAlign: "center", color: "#6b7280" }}>click to add image...</span>}
+    </button>
+    {approved && <p className="muted">Approved local artwork · {new Date(approved.approvedAt).toLocaleDateString()}</p>}
     {showPrompt && <div style={{ marginTop: 12 }}>
       <p className="muted">Step 1: Review the prompt. Generation uses your OpenAI API account and may incur charges.</p>
       <label>Additional instructions<textarea style={{ display: "block", width: "100%", minHeight: 70 }} value={extra} onChange={e => setExtra(e.target.value)} placeholder="Optional monster-specific art direction" /></label>
@@ -144,7 +153,7 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
       <div className="actions"><button type="button" onClick={() => void navigator.clipboard.writeText(prompt).then(() => setNotice("Prompt copied.")).catch(() => setError("Clipboard unavailable."))}>Copy prompt</button></div>
       {!unlockedToken && <label>Encryption password to unlock API token<input type="password" autoComplete="off" value={unlockPassword} onChange={e => setUnlockPassword(e.target.value)} placeholder="Enter encryption password for this session" /></label>}
       <div className="actions"><button type="button" disabled={generating || (!unlockedToken && !unlockPassword)} onClick={() => void generate()}>{generating ? "Generating image…" : "Generate AI artwork (paid API request)"}</button>{unlockedToken && <button type="button" onClick={() => { setUnlockedToken(null); setUnlockPassword(""); setNotice("API token locked."); }}>Lock API token</button>}</div>
-      <p className="muted">Step 2: Preview the AI result or import an image manually. Approve only when satisfied. Approved images are saved locally by monster UUID. The standard Vite development server does not run Netlify Functions.</p>
+      <p className="muted">Step 2: Preview the AI result or import an image manually. Approve only when satisfied. Approved images are saved locally by monster UUID. Artwork generation is available through the configured local development handler or deployed function.</p>
       <label className="upload">Choose candidate image<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e => { void previewFile(e.target.files?.[0]); e.target.value = ""; }} /></label>
       {candidate && <div style={{ marginTop: 12 }}><img src={candidate} alt="Candidate artwork awaiting approval" style={{ maxWidth: "100%", maxHeight: 320, objectFit: "contain" }} /><div className="actions"><button type="button" onClick={() => void approve()}>Approve artwork</button><button type="button" onClick={() => { const link = document.createElement("a"); link.href = candidate; link.download = monster.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-candidate.png"; link.click(); }}>Download candidate</button><button type="button" onClick={() => { setCandidate(null); setNotice("Candidate discarded."); }}>Discard candidate</button></div></div>}
       {error && <p className="error" role="alert">{error}</p>}
