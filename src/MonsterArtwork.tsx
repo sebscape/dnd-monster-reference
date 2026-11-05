@@ -128,7 +128,7 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
     try {
       const record = { monsterId: monster.id, dataUrl: candidate, approvedAt: new Date().toISOString() };
       await saveImage(record);
-      setApproved(record); setCandidate(null); setNotice("Artwork approved and saved privately in this browser."); setError("");
+      setApproved(record); setCandidate(null); setShowPrompt(false); setNotice(""); setError("");
     } catch { setError("Could not save approved artwork. Check browser storage."); }
   }
   const prompt = monsterPrompt(monster, extra);
@@ -169,16 +169,13 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
         {candidate && <div style={{ marginTop: 16 }}>
           <p>Candidate preview</p>
           <img src={candidate} alt="Candidate artwork awaiting approval" style={{ maxWidth: "100%", maxHeight: 240, objectFit: "contain" }} />
-          <div className="actions">
-            <button type="button" onClick={() => void approve()}>Approve artwork</button>
-            <button type="button" onClick={() => { const link = document.createElement("a"); link.href = candidate; link.download = monster.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-candidate.png"; link.click(); }}>Download candidate</button>
-            <button type="button" onClick={() => { setCandidate(null); setNotice("Candidate discarded."); }}>Discard candidate</button>
-          </div>
+
         </div>}
         {error && <p className="error" role="alert">{error}</p>}
         {notice && <p role="status">{notice}</p>}
-        <div className="actions" style={{ marginTop: 20, paddingTop: 12, borderTop: "1px solid #64748b", justifyContent: "flex-end" }}>
-          <button type="button" onClick={() => setShowPrompt(false)}>Done</button>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginTop: 20, paddingTop: 12, borderTop: "1px solid #64748b" }}>
+          <button type="button" onClick={() => { setCandidate(null); setError(""); setNotice(""); setShowPrompt(false); }}>Cancel</button>
+          <button type="button" disabled={!candidate} onClick={() => void approve()}>Save</button>
         </div>
       </div>}
     </div>
