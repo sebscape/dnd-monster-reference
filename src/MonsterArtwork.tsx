@@ -76,7 +76,7 @@ export function monsterPrompt(monster: Monster, extra: string): string {
 export default function MonsterArtwork({ monster, publishedUrl }: { monster: Monster; publishedUrl?: string }) {
   const [approved, setApproved] = useState<Stored>();
   const [candidate, setCandidate] = useState<string | null>(null);
-  const [extra, setExtra] = useState("");
+  const [prompt, setPrompt] = useState(() => monsterPrompt(monster, ""));
   const [showPrompt, setShowPrompt] = useState(false);
   const [mode, setMode] = useState<"upload" | "ai">("upload");
   const [unlockPassword, setUnlockPassword] = useState("");
@@ -86,7 +86,7 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
   const [notice, setNotice] = useState("");
   useEffect(() => {
     let active = true;
-    setApproved(undefined); setCandidate(null); setExtra(""); setError(""); setNotice(""); setShowPrompt(false); setMode("upload");
+    setApproved(undefined); setCandidate(null); setPrompt(monsterPrompt(monster, "")); setError(""); setNotice(""); setShowPrompt(false); setMode("upload");
     void readImage(monster.id).then(v => { if (active) setApproved(v); }).catch(() => { if (active) setError("Could not load local approved artwork."); });
     return () => { active = false; };
   }, [monster.id]);
@@ -101,6 +101,7 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
   }
   async function generate() {
     if (generating) return;
+    if (!prompt.trim()) { setError("Enter an image prompt before generating."); return; }
     setError(""); setNotice("");
     const settings = loadSettings();
     if (settings.provider !== "OpenAI") { setError("Select OpenAI in App Configuration."); return; }
@@ -131,7 +132,6 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
       setApproved(record); setCandidate(null); setShowPrompt(false); setNotice(""); setError("");
     } catch { setError("Could not save approved artwork. Check browser storage."); }
   }
-  const prompt = monsterPrompt(monster, extra);
   return <section aria-label="Monster artwork" className="artwork-panel">
     <h3>Monster artwork</h3>
     <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "flex-start" }}>
@@ -159,12 +159,19 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
           <p className="muted">Choose a PNG, JPEG, or WebP image (up to 8 MB) to preview before approval.</p>
           <label className="upload">Choose candidate image<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e => { void previewFile(e.target.files?.[0]); e.target.value = ""; }} /></label>
         </div> : <div role="tabpanel">
-          <p className="muted">Review the prompt before generating. OpenAI API generation may incur charges.</p>
-          <label>Additional instructions<textarea style={{ display: "block", width: "100%", minHeight: 70 }} value={extra} onChange={e => setExtra(e.target.value)} placeholder="Optional monster-specific art direction" /></label>
-          <label>Prepared image prompt<textarea style={{ display: "block", width: "100%", minHeight: 150 }} value={prompt} readOnly /></label>
-          <div className="actions"><button type="button" onClick={() => void navigator.clipboard.writeText(prompt).then(() => setNotice("Prompt copied.")).catch(() => setError("Clipboard unavailable."))}>Copy prompt</button></div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+            <label htmlFor="prepared-artwork-prompt" style={{ margin: 0 }}>Prepared image prompt</label>
+            <button type="button" aria-label="Restore default prompt" title="Restore default prompt" onClick={() => setPrompt(monsterPrompt(monster, ""))} style={{ padding: 5, display: "inline-flex", alignItems: "center" }}>
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></svg>
+            </button>
+            <button type="button" aria-label="Clear prompt" title="Clear prompt" onClick={() => setPrompt("")} disabled={!prompt} style={{ padding: 5, display: "inline-flex", alignItems: "center" }}>
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m20 20-8-8"/><path d="M4 20h16"/><path d="m4 14 9-9a2 2 0 0 1 3 0l3 3a2 2 0 0 1 0 3l-9 9H7z"/></svg>
+            </button>
+          </div>
+          <textarea id="prepared-artwork-prompt" aria-label="Prepared image prompt" style={{ display: "block", width: "100%", minHeight: 150 }} value={prompt} onChange={e => setPrompt(e.target.value)} placeholder="Enter an image-generation prompt" />
+          <div className="actions"><button type="button" disabled={!prompt.trim()} onClick={() => void navigator.clipboard.writeText(prompt).then(() => setNotice("Prompt copied.")).catch(() => setError("Clipboard unavailable."))}>Copy prompt</button></div>
           {!unlockedToken && <label>Encryption password to unlock API token<input type="password" autoComplete="off" value={unlockPassword} onChange={e => setUnlockPassword(e.target.value)} placeholder="Enter encryption password for this session" /></label>}
-          <div className="actions"><button type="button" disabled={generating || (!unlockedToken && !unlockPassword)} onClick={() => void generate()}>{generating ? "Generating image…" : "Generate AI artwork (paid API request)"}</button>{unlockedToken && <button type="button" onClick={() => { setUnlockedToken(null); setUnlockPassword(""); setNotice("API token locked."); }}>Lock API token</button>}</div>
+          <div className="actions"><button type="button" disabled={generating || !prompt.trim() || (!unlockedToken && !unlockPassword)} onClick={() => void generate()}>{generating ? "Generating image…" : "Generate AI artwork (paid API request)"}</button>{unlockedToken && <button type="button" onClick={() => { setUnlockedToken(null); setUnlockPassword(""); setNotice("API token locked."); }}>Lock API token</button>}</div>
         </div>}
         {candidate && <div style={{ marginTop: 16 }}>
           <p>Candidate preview</p>
