@@ -1,6 +1,5 @@
 import { defineConfig, type Plugin } from "vite";
-import { Readable } from "node:stream";
-import { handler } from "./netlify/functions/generate-artwork.mjs";
+import handler from "./netlify/functions/generate-artwork.mjs";
 
 function localArtworkApi(): Plugin {
   return {
