@@ -102,6 +102,7 @@ function Detail({ monster, artwork, onEdit, onCopy, onDelete }: { monster: Monst
 }
 export default function App() {
   const [showConfiguration, setShowConfiguration] = useState(false);
+  useEffect(() => { window.scrollTo({ top: 0, left: 0, behavior: "instant" }); }, [showConfiguration]);
   const [published, setPublished] = useState<Monster[]>([]);
   const [artwork, setArtwork] = useState<ArtworkEntry[]>([]);
   const [custom, setCustom] = useState<Monster[]>(readCustom);
