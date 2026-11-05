@@ -54,7 +54,7 @@ function readAsDataUrl(file: File): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
-export default function ArtworkConfiguration({ onClose }: { onClose: () => void }) {
+export default function ArtworkConfiguration({ onClose, onNewMonster, onExportCustom, onImportCustom, customError }: { onClose: () => void; onNewMonster: () => void; onExportCustom: () => void; onImportCustom: (file: File | undefined) => void; customError: string }) {
   const [settings, setSettings] = useState<Settings>(loadSettings);
   const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
@@ -116,6 +116,12 @@ export default function ArtworkConfiguration({ onClose }: { onClose: () => void 
   }
   return <section aria-label="App Configuration" className="detail">
     <div className="editor-heading"><h2>App Configuration — AI Artwork</h2><button type="button" onClick={onClose}>Close</button></div>
+    <div className="actions" style={{ justifyContent: "flex-start", margin: "16px 0 22px" }}>
+      <button type="button" onClick={onNewMonster}>+ New custom monster</button>
+      <button type="button" onClick={onExportCustom}>Export custom JSON</button>
+      <label className="upload">Import custom JSON<input type="file" accept=".json,application/json" onChange={e => { onImportCustom(e.target.files?.[0]); e.target.value = ""; }} /></label>
+    </div>
+    {customError && <p className="error" role="alert">{customError}</p>}
     <p className="muted">Configure artwork generation preferences. Generation requests are sent only when you click Generate AI artwork on a monster.</p>
     <div className="fields">
       <label>AI Provider<select value={settings.provider} onChange={e => setSettings(s => ({ ...s, provider: e.target.value }))}><option value="OpenAI">OpenAI</option><option value="Other">Other (future integration)</option></select></label>
