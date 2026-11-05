@@ -88,11 +88,12 @@ function Editor({ initial, onSave, onCancel }: { initial: Monster; onSave: (m: M
 function Detail({ monster, artwork, onEdit, onCopy, onDelete }: { monster: Monster; artwork?: ArtworkEntry; onEdit: () => void; onCopy: () => void; onDelete: () => void }) {
   const custom = monster.source.type === "homebrew";
   return <><h2>{monster.name}</h2>
-    <MonsterArtwork key={monster.id} monster={monster} publishedUrl={artwork?.image_url} />
-    <p>{monster.size} {monster.type} · CR {monster.challenge_rating} · {custom ? "Custom" : "Published"}</p>
-    <div className="stats"><span>AC <b>{monster.armor_class}</b></span><span>HP <b>{monster.hit_points}</b></span><span>Initiative <b>{monster.initiative_bonus >= 0 ? "+" : ""}{monster.initiative_bonus}</b></span></div>
-    {monster.speed && <p><b>Speed:</b> {monster.speed}</p>}
-    {monster.abilities && <div className="abilities ability-display">{ABILITY_KEYS.map(k => <div key={k}><b>{k.toUpperCase()}</b><span>{monster.abilities![k]} ({modifier(monster.abilities![k])})</span></div>)}</div>}
+    <MonsterArtwork key={monster.id} monster={monster} publishedUrl={artwork?.image_url} summary={<>
+      <p>{monster.size} {monster.type} · CR {monster.challenge_rating} · {custom ? "Custom" : "Published"}</p>
+      <div className="stats"><span>AC <b>{monster.armor_class}</b></span><span>HP <b>{monster.hit_points}</b></span><span>Initiative <b>{monster.initiative_bonus >= 0 ? "+" : ""}{monster.initiative_bonus}</b></span></div>
+      {monster.speed && <p><b>Speed:</b> {monster.speed}</p>}
+      {monster.abilities && <div className="abilities ability-display">{ABILITY_KEYS.map(k => <div key={k}><b>{k.toUpperCase()}</b><span>{monster.abilities![k]} ({modifier(monster.abilities![k])})</span></div>)}</div>}
+    </>} />
     {TEXT_KEYS.filter(k => k !== "speed").map(k => monster[k] ? <p key={k}><b>{titleCase(k)}:</b> {monster[k]}</p> : null)}
     {FEATURE_KEYS.map(k => (monster[k]?.length ?? 0) > 0 && <section key={k}><h3>{titleCase(k)}</h3>{monster[k]?.map((f, i) => <p key={i}><b>{f.name}.</b> <FeatureDescription feature={f} /></p>)}</section>)}
     <p><b>Tags:</b> {monster.tags.join(", ") || "None"}</p><p><b>Source:</b> {monster.source.name}</p>
