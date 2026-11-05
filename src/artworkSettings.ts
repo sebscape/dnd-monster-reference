@@ -4,8 +4,8 @@ export type Settings = { provider: string; model: string; commonPrompt: string; 
 const DEFAULT_PROMPT = "Create an original fantasy bestiary illustration of the specified creature. Show the entire creature with a clear silhouette, consistent lighting and brushwork, and a true transparent background. No text, labels, scenery, or borders.";
 export const defaults: Settings = { provider: "OpenAI", model: "", commonPrompt: DEFAULT_PROMPT, version: 1 };
 const toBase64 = (bytes: Uint8Array): string => btoa(Array.from(bytes, b => String.fromCharCode(b)).join(""));
-const fromBase64 = (value: string): Uint8Array<ArrayBuffer> => Uint8Array.from(atob(value), c => c.charCodeAt(0));
-async function derive(password: string, salt: Uint8Array<ArrayBuffer>, iterations: number): Promise<CryptoKey> {
+const fromBase64 = (value: string): Uint8Array => Uint8Array.from(atob(value), c => c.charCodeAt(0));
+async function derive(password: string, salt: Uint8Array, iterations: number): Promise<CryptoKey> {
   const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
   return crypto.subtle.deriveKey({ name: "PBKDF2", hash: "SHA-256", salt, iterations }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
 }
