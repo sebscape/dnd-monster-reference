@@ -58,14 +58,17 @@ async function loadReferences(): Promise<string[]> {
 const VISUAL_DESCRIPTIONS: Record<string, string> = {
   aboleth: "An ancient, terrifying aquatic aberration: a huge elongated fishlike body, three vertically arranged eyes, a broad tooth-filled mouth, long grasping tentacles, ridged fins, and slick mucus-coated skin. Pose the entire body and tentacles in a readable vertical composition.",
 };
-export function monsterPrompt(monster: Monster, extra: string): string {
-  const settings = loadSettings();
+export function monsterVisualDescription(monster: Monster): string {
   const curated = VISUAL_DESCRIPTIONS[monster.name.trim().toLowerCase()];
-  const visualDescription = curated ?? [
+  return curated ?? [
     "Depict a recognizable " + monster.name + ", a " + monster.size.toLowerCase() + " " + monster.type.toLowerCase() + " fantasy creature.",
     "Use distinctive physical features associated with this creature, emphasizing silhouette, anatomy, textures, and a clear miniature-friendly pose.",
     "Do not depict game rules, statistics, text, symbols, or magical effects unless they are essential to the creature's visible appearance."
   ].join(" ");
+}
+export function monsterPrompt(monster: Monster, extra: string): string {
+  const settings = loadSettings();
+  const visualDescription = monsterVisualDescription(monster);
   return [
     settings.commonPrompt,
     "Creature: " + monster.name,
