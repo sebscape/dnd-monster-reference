@@ -139,7 +139,7 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
       aria-expanded={showPrompt}
       onClick={() => setShowPrompt(v => !v)}
       title={showPrompt ? "Hide artwork workflow" : "Click to add or change artwork"}
-      style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", maxWidth: 320, aspectRatio: "1 / 2", border: "1px solid #9ca3af", borderRadius: 8, background: "transparent", color: "inherit", cursor: "pointer", padding: 12, overflow: "hidden" }}
+      style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", maxWidth: 160, aspectRatio: "1 / 2", border: "1px solid #9ca3af", borderRadius: 8, background: "transparent", color: "inherit", cursor: "pointer", padding: 12, overflow: "hidden" }}
     >
       {approved || publishedUrl
         ? <img src={approved?.dataUrl ?? publishedUrl} alt={monster.name + " artwork"} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
