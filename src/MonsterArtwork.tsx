@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import type { Monster } from "./models/monster";
 import { decryptToken, loadSettings } from "./artworkSettings";
 
@@ -73,7 +74,7 @@ export function monsterPrompt(monster: Monster, extra: string): string {
     extra.trim()
   ].filter(Boolean).join("\n\n");
 }
-export default function MonsterArtwork({ monster, publishedUrl }: { monster: Monster; publishedUrl?: string }) {
+export default function MonsterArtwork({ monster, publishedUrl, summary }: { monster: Monster; publishedUrl?: string; summary: ReactNode }) {
   const [approved, setApproved] = useState<Stored>();
   const [candidate, setCandidate] = useState<string | null>(null);
   const [prompt, setPrompt] = useState(() => monsterPrompt(monster, ""));
@@ -150,7 +151,7 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
         </button>
         {approved && <p className="muted" style={{ fontSize: "0.8rem" }}>Approved local artwork · {new Date(approved.approvedAt).toLocaleDateString()}</p>}
       </div>
-      {showPrompt && <div style={{ flex: "1 1 340px", minWidth: 0, border: "1px solid #64748b", borderRadius: 8, padding: 16 }}>
+      {!showPrompt ? <div className="artwork-summary" style={{ flex: "1 1 340px", minWidth: 0 }}>{summary}</div> : <div style={{ flex: "1 1 340px", minWidth: 0, border: "1px solid #64748b", borderRadius: 8, padding: 16 }}>
         <div className="artwork-tabs" role="tablist" aria-label="Artwork source">
           <button className="artwork-tab" type="button" role="tab" aria-selected={mode === "upload"} onClick={() => setMode("upload")}>Upload</button>
           <button className="artwork-tab" type="button" role="tab" aria-selected={mode === "ai"} onClick={() => setMode("ai")}>AI Generate</button>
