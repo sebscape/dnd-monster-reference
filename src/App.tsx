@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import ArtworkConfiguration from "./ArtworkConfiguration";
+import MonsterArtwork from "./MonsterArtwork";
 import type { Monster, MonsterCatalog, NamedFeature } from "./models/monster";
 import { ABILITY_KEYS, isMonster, newMonster, SCHEMA_VERSION } from "./models/monster";
 
@@ -87,9 +88,8 @@ function Editor({ initial, onSave, onCancel }: { initial: Monster; onSave: (m: M
 function Detail({ monster, artwork, onEdit, onCopy, onDelete }: { monster: Monster; artwork?: ArtworkEntry; onEdit: () => void; onCopy: () => void; onDelete: () => void }) {
   const custom = monster.source.type === "homebrew";
   return <><h2>{monster.name}</h2>
-    <section aria-label="Monster artwork" className="artwork-panel">
-      {artwork ? <><img src={artwork.image_url} alt={monster.name + " illustration"} style={{ maxWidth: "100%", maxHeight: 320, objectFit: "contain" }} /><p className="muted">Artwork: {artwork.creator} · <a href={artwork.license_url} target="_blank" rel="noopener noreferrer">{artwork.license}</a> · <a href={artwork.source_url} target="_blank" rel="noopener noreferrer">Original source</a></p></> : <p className="muted">No artwork selected yet. <a href={"https://commons.wikimedia.org/w/index.php?search=" + encodeURIComponent(monster.name + " fantasy creature") + "&title=Special:MediaSearch&type=image"} target="_blank" rel="noopener noreferrer">Search Wikimedia Commons</a> (verify license and creature match before reuse).</p>}
-    </section><p>{monster.size} {monster.type} · CR {monster.challenge_rating} · {custom ? "Custom" : "Published"}</p>
+    <MonsterArtwork key={monster.id} monster={monster} publishedUrl={artwork?.image_url} />
+    <p>{monster.size} {monster.type} · CR {monster.challenge_rating} · {custom ? "Custom" : "Published"}</p>
     <div className="stats"><span>AC <b>{monster.armor_class}</b></span><span>HP <b>{monster.hit_points}</b></span><span>Initiative <b>{monster.initiative_bonus >= 0 ? "+" : ""}{monster.initiative_bonus}</b></span></div>
     {monster.speed && <p><b>Speed:</b> {monster.speed}</p>}
     {monster.abilities && <div className="abilities ability-display">{ABILITY_KEYS.map(k => <div key={k}><b>{k.toUpperCase()}</b><span>{monster.abilities![k]} ({modifier(monster.abilities![k])})</span></div>)}</div>}
