@@ -157,7 +157,7 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
         </div>
         {mode === "upload" ? <div role="tabpanel">
           <p className="muted">Choose a PNG, JPEG, or WebP image (up to 8 MB) to preview before approval.</p>
-          <label className="upload">Choose candidate image<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e => { void previewFile(e.target.files?.[0]); e.target.value = ""; }} /></label>
+          <label className="upload">Choose Image ...<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e => { void previewFile(e.target.files?.[0]); e.target.value = ""; }} /></label>
         </div> : <div role="tabpanel">
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
             <label htmlFor="prepared-artwork-prompt" style={{ margin: 0 }}>Prepared image prompt</label>
