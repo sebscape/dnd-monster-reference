@@ -117,8 +117,6 @@ export default function ArtworkConfiguration({ onClose }: { onClose: () => void 
   return <section aria-label="App Configuration" className="detail">
     <div className="editor-heading"><h2>App Configuration — AI Artwork</h2><button type="button" onClick={onClose}>Close</button></div>
     <p className="muted">Configure artwork generation preferences. No image generation requests are sent in this version.</p>
-    {error && <p className="error" role="alert">{error}</p>}
-    {message && <p role="status">{message}</p>}
     <div className="fields">
       <label>AI Provider<select value={settings.provider} onChange={e => setSettings(s => ({ ...s, provider: e.target.value }))}><option value="OpenAI">OpenAI</option><option value="Other">Other (future integration)</option></select></label>
       <label>Image model (optional)<input value={settings.model} placeholder="Configured when API integration is added" onChange={e => setSettings(s => ({ ...s, model: e.target.value }))} /></label>
@@ -149,6 +147,10 @@ export default function ArtworkConfiguration({ onClose }: { onClose: () => void 
       </div>
       {references.length === 0 && <p className="muted">No reference images added.</p>}
     </fieldset>
+    <div aria-live="polite" aria-atomic="true" style={{ marginTop: 12 }}>
+      {error && <p className="error" role="alert">{error}</p>}
+      {message && <p role="status">{message}</p>}
+    </div>
     <div className="actions"><button type="button" disabled={saving} onClick={() => void save()}>{saving ? "Saving…" : "Save artwork settings"}</button><button type="button" onClick={onClose}>Back to monsters</button></div>
   </section>;
 }
