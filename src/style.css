@@ -44,3 +44,9 @@ button:not(:disabled):active{filter:brightness(1.12)}
   border-bottom-color:#93c5fd;
   font-weight:700;
 }
+
+/* Mascot branding in the application header. */
+.app-brand{display:flex;align-items:center;gap:16px;min-width:0}
+.app-brand-logo{width:88px;height:88px;object-fit:contain;flex-shrink:0}
+.app-brand h1{line-height:1.15}
+@media(max-width:650px){.app-brand-logo{width:64px;height:64px}.app-brand{gap:10px}}
