@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import ArtworkConfiguration from "./ArtworkConfiguration";
-import MonsterArtwork from "./MonsterArtwork";
+import MonsterArtwork, { monsterVisualDescription } from "./MonsterArtwork";
 import type { Monster, MonsterCatalog, NamedFeature } from "./models/monster";
 import { ABILITY_KEYS, isMonster, newMonster, SCHEMA_VERSION } from "./models/monster";
 
@@ -89,6 +89,7 @@ function Detail({ monster, artwork, onEdit, onCopy, onDelete }: { monster: Monst
   const custom = monster.source.type === "homebrew";
   return <><h2>{monster.name}</h2>
     <MonsterArtwork key={monster.id} monster={monster} publishedUrl={artwork?.image_url} summary={<>
+      <p className="monster-visual-description">{monsterVisualDescription(monster)}</p>
       <p>{monster.size} {monster.type} · CR {monster.challenge_rating} · {custom ? "Custom" : "Published"}</p>
       <div className="stats"><span>AC <b>{monster.armor_class}</b></span><span>HP <b>{monster.hit_points}</b></span><span>Initiative <b>{monster.initiative_bonus >= 0 ? "+" : ""}{monster.initiative_bonus}</b></span></div>
       {monster.speed && <p><b>Speed:</b> {monster.speed}</p>}
