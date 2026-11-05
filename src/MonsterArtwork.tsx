@@ -151,9 +151,9 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
         {approved && <p className="muted" style={{ fontSize: "0.8rem" }}>Approved local artwork · {new Date(approved.approvedAt).toLocaleDateString()}</p>}
       </div>
       {showPrompt && <div style={{ flex: "1 1 340px", minWidth: 0, border: "1px solid #64748b", borderRadius: 8, padding: 16 }}>
-        <div role="tablist" aria-label="Artwork source" style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-          <button type="button" role="tab" aria-selected={mode === "upload"} onClick={() => setMode("upload")} style={{ fontWeight: mode === "upload" ? 700 : 400, borderColor: mode === "upload" ? "#93c5fd" : undefined }}>Upload</button>
-          <button type="button" role="tab" aria-selected={mode === "ai"} onClick={() => setMode("ai")} style={{ fontWeight: mode === "ai" ? 700 : 400, borderColor: mode === "ai" ? "#93c5fd" : undefined }}>AI Generate</button>
+        <div className="artwork-tabs" role="tablist" aria-label="Artwork source">
+          <button className="artwork-tab" type="button" role="tab" aria-selected={mode === "upload"} onClick={() => setMode("upload")}>Upload</button>
+          <button className="artwork-tab" type="button" role="tab" aria-selected={mode === "ai"} onClick={() => setMode("ai")}>AI Generate</button>
         </div>
         {mode === "upload" ? <div role="tabpanel">
           <p className="muted">Choose a PNG, JPEG, or WebP image (up to 8 MB) to preview before approval.</p>
