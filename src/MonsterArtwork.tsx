@@ -54,15 +54,24 @@ async function loadReferences(): Promise<string[]> {
     });
   } finally { db.close(); }
 }
+const VISUAL_DESCRIPTIONS: Record<string, string> = {
+  aboleth: "An ancient, terrifying aquatic aberration: a huge elongated fishlike body, three vertically arranged eyes, a broad tooth-filled mouth, long grasping tentacles, ridged fins, and slick mucus-coated skin. Pose the entire body and tentacles in a readable vertical composition.",
+};
 export function monsterPrompt(monster: Monster, extra: string): string {
   const settings = loadSettings();
-  const details = [
-    monster.name + " — " + monster.size + " " + monster.type,
-    monster.alignment ? "Alignment: " + monster.alignment : "",
-    monster.traits?.slice(0, 4).map(t => t.name + ": " + t.description).join("\n") ?? "",
+  const curated = VISUAL_DESCRIPTIONS[monster.name.trim().toLowerCase()];
+  const visualDescription = curated ?? [
+    "Depict a recognizable " + monster.name + ", a " + monster.size.toLowerCase() + " " + monster.type.toLowerCase() + " fantasy creature.",
+    "Use distinctive physical features associated with this creature, emphasizing silhouette, anatomy, textures, and a clear miniature-friendly pose.",
+    "Do not depict game rules, statistics, text, symbols, or magical effects unless they are essential to the creature's visible appearance."
+  ].join(" ");
+  return [
+    settings.commonPrompt,
+    "Creature: " + monster.name,
+    "Visual description: " + visualDescription,
+    "Composition: Show the entire creature, including all limbs, fins, tail, and tentacles, inside a vertical 1:2 portrait frame. Keep a true transparent background, with no scenery, lettering, border, or cropped extremities.",
     extra.trim()
-  ].filter(Boolean);
-  return [settings.commonPrompt, ...details].join("\n\n");
+  ].filter(Boolean).join("\n\n");
 }
 export default function MonsterArtwork({ monster, publishedUrl }: { monster: Monster; publishedUrl?: string }) {
   const [approved, setApproved] = useState<Stored>();
