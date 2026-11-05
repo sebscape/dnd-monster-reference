@@ -171,8 +171,11 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
           </div>
           <textarea id="prepared-artwork-prompt" aria-label="Prepared image prompt" style={{ display: "block", width: "100%", minHeight: 150 }} value={prompt} onChange={e => setPrompt(e.target.value)} placeholder="Enter an image-generation prompt" />
           <div className="actions" style={{ marginTop: 12, marginBottom: 16 }}><button type="button" disabled={!prompt.trim()} onClick={() => void navigator.clipboard.writeText(prompt).then(() => setNotice("Prompt copied.")).catch(() => setError("Clipboard unavailable."))}>Copy prompt</button></div>
-          {!unlockedToken && <label>Encryption password to unlock API token<input type="password" autoComplete="off" value={unlockPassword} onChange={e => setUnlockPassword(e.target.value)} placeholder="Enter encryption password for this session" /></label>}
-          <div className="actions"><button type="button" disabled={generating || !prompt.trim() || (!unlockedToken && !unlockPassword)} onClick={() => void generate()}>{generating ? "Generating image…" : "Generate AI artwork (paid API request)"}</button>{unlockedToken && <button type="button" onClick={() => { setUnlockedToken(null); setUnlockPassword(""); setNotice("API token locked."); }}>Lock API token</button>}</div>
+          <div style={{ display: "flex", alignItems: "flex-end", flexWrap: "wrap", gap: 12 }}>
+            <button type="button" disabled={generating || !prompt.trim() || (!unlockedToken && !unlockPassword)} onClick={() => void generate()}>{generating ? "Generating image…" : "Generate With API $"}</button>
+            {!unlockedToken ? <label style={{ flex: "1 1 200px", minWidth: 0, margin: 0 }}>Encryption password to unlock API token<input type="password" autoComplete="off" value={unlockPassword} onChange={e => setUnlockPassword(e.target.value)} placeholder="Encryption password" style={{ width: "100%" }} /></label>
+            : <button type="button" onClick={() => { setUnlockedToken(null); setUnlockPassword(""); setNotice("API token locked."); }}>Lock API token</button>}
+          </div>
         </div>}
         {candidate && <div style={{ marginTop: 16 }}>
           <div style={{ display: "flex", justifyContent: "center", width: "100%" }}><img src={candidate} alt="Candidate artwork awaiting approval" style={{ display: "block", maxWidth: "100%", maxHeight: 240, objectFit: "contain" }} /></div>
