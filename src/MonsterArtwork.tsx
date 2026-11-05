@@ -133,22 +133,48 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
       setApproved(record); setCandidate(null); setShowPrompt(false); setNotice(""); setError("");
     } catch { setError("Could not save approved artwork. Check browser storage."); }
   }
+  async function downloadArtwork() {
+    const imageUrl = approved?.dataUrl ?? publishedUrl;
+    if (!imageUrl) return;
+    try {
+      const response = await fetch(imageUrl);
+      if (!response.ok) throw new Error("Image download failed.");
+      const blob = await response.blob();
+      const extension = blob.type === "image/jpeg" ? "jpg" : blob.type === "image/webp" ? "webp" : "png";
+      const filename = (monster.name.trim().replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "") || "monster") + "." + extension;
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+    } catch {
+      setError("Unable to download this artwork. Try opening the image in a new tab.");
+      setShowPrompt(true);
+    }
+  }
   return <section aria-label="Monster artwork" className="artwork-panel">
     <h3>Monster artwork</h3>
     <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "flex-start" }}>
       <div style={{ width: 160, flex: "0 0 160px" }}>
-        <button
+        {approved || publishedUrl ? <div style={{ position: "relative", width: 160, aspectRatio: "1 / 2", border: "1px solid #9ca3af", borderRadius: 8, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: 12 }}>
+          <img src={approved?.dataUrl ?? publishedUrl} alt={monster.name + " artwork"} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+          <button type="button" aria-label={"Edit artwork for " + monster.name} title="Edit artwork" aria-expanded={showPrompt} onClick={() => setShowPrompt(true)} style={{ position: "absolute", top: 6, right: 6, width: 32, height: 32, padding: 6, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", background: "#34465d", border: "1px solid #9ca3af", color: "#fff" }}>
+            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4z"/></svg>
+          </button>
+          <button type="button" aria-label={"Download artwork for " + monster.name} title="Download artwork" onClick={() => void downloadArtwork()} style={{ position: "absolute", bottom: 6, right: 6, width: 32, height: 32, padding: 6, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", background: "#34465d", border: "1px solid #9ca3af", color: "#fff" }}>
+            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 17v4h14v-4"/></svg>
+          </button>
+        </div> : <button
           type="button"
-          aria-label={showPrompt ? "Hide artwork workflow for " + monster.name : "Open artwork workflow for " + monster.name}
+          aria-label={"Open artwork workflow for " + monster.name}
           aria-expanded={showPrompt}
           onClick={() => setShowPrompt(v => !v)}
-          title={showPrompt ? "Hide artwork workflow" : "Click to add or change artwork"}
+          title="Click to add artwork"
           style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 160, aspectRatio: "1 / 2", border: "1px solid #9ca3af", borderRadius: 8, background: "transparent", color: "inherit", cursor: "pointer", padding: 12, overflow: "hidden" }}
-        >
-          {approved || publishedUrl
-            ? <img src={approved?.dataUrl ?? publishedUrl} alt={monster.name + " artwork"} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-            : <span style={{ textAlign: "center", color: "#6b7280" }}>click to add image...</span>}
-        </button>
+        ><span style={{ textAlign: "center", color: "#6b7280" }}>click to add image...</span></button>}
         {approved && <p className="muted" style={{ fontSize: "0.8rem" }}>Approved local artwork · {new Date(approved.approvedAt).toLocaleDateString()}</p>}
       </div>
       {!showPrompt ? <div className="artwork-summary" style={{ flex: "1 1 340px", minWidth: 0 }}>{summary}</div> : <div style={{ flex: "1 1 340px", minWidth: 0, border: "1px solid #64748b", borderRadius: 8, padding: 16 }}>
