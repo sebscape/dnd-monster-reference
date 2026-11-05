@@ -170,7 +170,7 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
             </button>
           </div>
           <textarea id="prepared-artwork-prompt" aria-label="Prepared image prompt" style={{ display: "block", width: "100%", minHeight: 150 }} value={prompt} onChange={e => setPrompt(e.target.value)} placeholder="Enter an image-generation prompt" />
-          <div className="actions"><button type="button" disabled={!prompt.trim()} onClick={() => void navigator.clipboard.writeText(prompt).then(() => setNotice("Prompt copied.")).catch(() => setError("Clipboard unavailable."))}>Copy prompt</button></div>
+          <div className="actions" style={{ marginTop: 12, marginBottom: 16 }}><button type="button" disabled={!prompt.trim()} onClick={() => void navigator.clipboard.writeText(prompt).then(() => setNotice("Prompt copied.")).catch(() => setError("Clipboard unavailable."))}>Copy prompt</button></div>
           {!unlockedToken && <label>Encryption password to unlock API token<input type="password" autoComplete="off" value={unlockPassword} onChange={e => setUnlockPassword(e.target.value)} placeholder="Enter encryption password for this session" /></label>}
           <div className="actions"><button type="button" disabled={generating || !prompt.trim() || (!unlockedToken && !unlockPassword)} onClick={() => void generate()}>{generating ? "Generating image…" : "Generate AI artwork (paid API request)"}</button>{unlockedToken && <button type="button" onClick={() => { setUnlockedToken(null); setUnlockPassword(""); setNotice("API token locked."); }}>Lock API token</button>}</div>
         </div>}
