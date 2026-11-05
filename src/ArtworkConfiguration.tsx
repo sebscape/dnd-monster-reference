@@ -116,10 +116,10 @@ export default function ArtworkConfiguration({ onClose }: { onClose: () => void 
   }
   return <section aria-label="App Configuration" className="detail">
     <div className="editor-heading"><h2>App Configuration — AI Artwork</h2><button type="button" onClick={onClose}>Close</button></div>
-    <p className="muted">Configure artwork generation preferences. No image generation requests are sent in this version.</p>
+    <p className="muted">Configure artwork generation preferences. Generation requests are sent only when you click Generate AI artwork on a monster.</p>
     <div className="fields">
       <label>AI Provider<select value={settings.provider} onChange={e => setSettings(s => ({ ...s, provider: e.target.value }))}><option value="OpenAI">OpenAI</option><option value="Other">Other (future integration)</option></select></label>
-      <label>Image model (optional)<input value={settings.model} placeholder="Configured when API integration is added" onChange={e => setSettings(s => ({ ...s, model: e.target.value }))} /></label>
+      <label>Image model (optional)<input value={settings.model} placeholder="gpt-image-1.5 (default)" onChange={e => setSettings(s => ({ ...s, model: e.target.value }))} /></label>
       {settings.encryptedToken && !replaceToken ? <>
         <label>API Token<input type="password" value="************" readOnly aria-label="API Token saved (masked placeholder)" title="Encrypted token saved; displayed bullets are placeholders" /></label>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -136,12 +136,12 @@ export default function ArtworkConfiguration({ onClose }: { onClose: () => void 
         {replaceToken && <button type="button" onClick={() => { setReplaceToken(false); setToken(""); setPassword(""); setConfirmation(""); }}>Cancel token replacement</button>}
       </>}
     </div>
-    <p className="muted">The token is encrypted with AES-256-GCM before being saved in this browser. Your encryption password is never saved. If forgotten, replace the token and choose a new password. Encryption protects stored data, but cannot protect an unlocked token from malicious scripts. No generation requests are sent yet.</p>
+    <p className="muted">The token is encrypted with AES-256-GCM before being saved in this browser. Your encryption password is never saved. If forgotten, replace the token and choose a new password. Encryption protects stored data, but cannot protect an unlocked token from malicious scripts. An unlocked token is transmitted to the Netlify Function when you initiate generation.</p>
     <label style={{ display: "block" }}>Common Prompt for Image<textarea style={{ display: "block", width: "100%", minHeight: 150, marginTop: 8 }} value={settings.commonPrompt} onChange={e => setSettings(s => ({ ...s, commonPrompt: e.target.value }))} /></label>
     <p className="muted">This prompt will precede the monster-specific description. Current saved settings version: {settings.version}.</p>
     <fieldset><legend>Style reference images</legend>
       <label className="upload">Add reference images<input type="file" accept="image/png,image/jpeg,image/webp" multiple onChange={e => { void addFiles(e.target.files); e.target.value = ""; }} /></label>
-      <p className="muted">Images are kept in this browser's IndexedDB, not uploaded to GitHub. They will be sent only when a future generation request is explicitly initiated.</p>
+      <p className="muted">Images are kept in this browser's IndexedDB, not uploaded to GitHub. Up to four references are sent only when you explicitly initiate an AI generation request.</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
         {references.map(ref => <div key={ref.id} style={{ width: 145 }}><img src={ref.data} alt={"Style reference " + ref.name} style={{ width: "100%", height: 145, objectFit: "contain" }} /><p style={{ overflowWrap: "anywhere" }}>{ref.name}</p><button type="button" onClick={() => void remove(ref.id)}>Remove</button></div>)}
       </div>
