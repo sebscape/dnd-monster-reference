@@ -174,7 +174,6 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
           <div className="actions"><button type="button" disabled={generating || !prompt.trim() || (!unlockedToken && !unlockPassword)} onClick={() => void generate()}>{generating ? "Generating image…" : "Generate AI artwork (paid API request)"}</button>{unlockedToken && <button type="button" onClick={() => { setUnlockedToken(null); setUnlockPassword(""); setNotice("API token locked."); }}>Lock API token</button>}</div>
         </div>}
         {candidate && <div style={{ marginTop: 16 }}>
-          <p>Candidate preview</p>
           <img src={candidate} alt="Candidate artwork awaiting approval" style={{ maxWidth: "100%", maxHeight: 240, objectFit: "contain" }} />
 
         </div>}
