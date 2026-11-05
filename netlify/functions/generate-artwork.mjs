@@ -6,7 +6,7 @@ export default async function handler(request) {
     const { token, model, prompt, references } = await request.json();
     if (typeof token !== "string" || !token.startsWith("sk-") || token.length > 512)
       return new Response(JSON.stringify({ error: "A valid OpenAI API token is required." }), { status: 400 });
-    const allowed = ["gpt-image-2.5-flare", "gpt-image-2.5-sunburst", "gpt-image-2", "gpt-image-1.5", "gpt-image-1-mini"];
+    const allowed = ["gpt-image-1.5", "gpt-image-1", "gpt-image-1-mini"];
     if (!allowed.includes(model)) return new Response(JSON.stringify({ error: "Unsupported image model." }), { status: 400 });
     if (typeof prompt !== "string" || !prompt.trim() || prompt.length > 32000)
       return new Response(JSON.stringify({ error: "Prompt is missing or too long." }), { status: 400 });
