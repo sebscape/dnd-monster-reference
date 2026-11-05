@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import ArtworkConfiguration from "./ArtworkConfiguration";
 import type { Monster, MonsterCatalog, NamedFeature } from "./models/monster";
 import { ABILITY_KEYS, isMonster, newMonster, SCHEMA_VERSION } from "./models/monster";
 
@@ -100,6 +101,7 @@ function Detail({ monster, artwork, onEdit, onCopy, onDelete }: { monster: Monst
   </>;
 }
 export default function App() {
+  const [showConfiguration, setShowConfiguration] = useState(false);
   const [published, setPublished] = useState<Monster[]>([]);
   const [artwork, setArtwork] = useState<ArtworkEntry[]>([]);
   const [custom, setCustom] = useState<Monster[]>(readCustom);
@@ -170,9 +172,11 @@ export default function App() {
   return <main>
     <header><div><h1>D&D Monster Reference</h1><p>Published catalog + private custom monsters</p></div><span className="count">{published.length} published · {custom.length} custom</span></header>
     <div className="toolbar"><input aria-label="Search monsters" placeholder="Search name, type, CR, tags…" value={query} onChange={e => setQuery(e.target.value)} />
-      <button onClick={() => setEditing(newMonster())}>+ New custom monster</button>
+      <button onClick={() => { setShowConfiguration(v => !v); setEditing(null); }}>{showConfiguration ? "Back to monsters" : "App Configuration"}</button>
+      <button onClick={() => { setShowConfiguration(false); setEditing(newMonster()); }}>+ New custom monster</button>
       <button onClick={() => downloadJson("custom-monsters.json", { schema_version: SCHEMA_VERSION, monsters: custom })}>Export custom JSON</button>
       <label className="upload">Import custom JSON<input type="file" accept=".json,application/json" onChange={e => { void importCustom(e.target.files?.[0]); e.target.value = ""; }} /></label></div>
+    {showConfiguration ? <ArtworkConfiguration onClose={() => setShowConfiguration(false)} /> : <>
     <section className="filter-panel" aria-label="Monster filters">
       <div className="filter-fields">
         <label>Source<select value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}><option value="all">All sources</option><option value="published">Published</option><option value="custom">Custom</option></select></label>
@@ -187,6 +191,7 @@ export default function App() {
     <div className="layout"><section className="list"><h2>Monsters</h2>{monsters.length === 0 && <p className="muted">{allMonsters.length === 0 ? "No monsters in the catalog. Create a custom monster to begin." : "No monsters match the current filters."}</p>}
       {monsters.map(m => <button key={m.id} className={"monster " + (selectedId === m.id ? "active" : "")} onClick={() => { setSelectedId(m.id); setEditing(null); }}><strong>{m.name}</strong><small>{m.type} · CR {m.challenge_rating} · {m.source.type === "homebrew" ? "Custom" : "Published"}</small></button>)}</section>
       <section className="detail">{editing ? <Editor key={editing.id} initial={editing} onSave={saveCustom} onCancel={() => setEditing(null)} /> : selected ? <Detail monster={selected} artwork={artwork.find(a => a.monster_id === selected.id)} onEdit={() => setEditing(selected)} onCopy={() => setEditing(newMonster(selected))} onDelete={() => deleteCustom(selected)} /> : <p className="muted">Select a monster to inspect its record, or create a custom monster.</p>}</section></div>
+    </>}
     <footer>Custom records are saved in this browser. Export custom JSON regularly for backup. Published definitions remain read-only.</footer>
   </main>;
 }
