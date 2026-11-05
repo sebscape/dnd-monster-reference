@@ -3,6 +3,8 @@ import type { Monster, MonsterCatalog, NamedFeature } from "./models/monster";
 import { ABILITY_KEYS, isMonster, newMonster, SCHEMA_VERSION } from "./models/monster";
 
 const LOCAL_KEY = "dnd-monster-reference-custom-v1";
+interface ArtworkEntry { monster_id: string; image_url: string; creator: string; license: string; license_url: string; source_url: string; }
+interface ArtworkManifest { artworks: ArtworkEntry[]; }
 const FEATURE_KEYS = ["traits", "actions", "bonus_actions", "reactions", "legendary_actions", "spellcasting"] as const;
 const TEXT_KEYS = ["alignment", "armor_description", "hit_dice", "speed", "saving_throws", "skills", "damage_vulnerabilities", "damage_resistances", "damage_immunities", "condition_immunities", "senses", "languages", "gear", "legendary_actions_intro"] as const;
 function readCustom(): Monster[] {
@@ -81,9 +83,12 @@ function Editor({ initial, onSave, onCancel }: { initial: Monster; onSave: (m: M
     <div className="actions"><button type="submit">Save custom monster</button><button type="button" onClick={onCancel}>Cancel</button></div>
   </form>;
 }
-function Detail({ monster, onEdit, onCopy, onDelete }: { monster: Monster; onEdit: () => void; onCopy: () => void; onDelete: () => void }) {
+function Detail({ monster, artwork, onEdit, onCopy, onDelete }: { monster: Monster; artwork?: ArtworkEntry; onEdit: () => void; onCopy: () => void; onDelete: () => void }) {
   const custom = monster.source.type === "homebrew";
-  return <><h2>{monster.name}</h2><p>{monster.size} {monster.type} · CR {monster.challenge_rating} · {custom ? "Custom" : "Published"}</p>
+  return <><h2>{monster.name}</h2>
+    <section aria-label="Monster artwork" className="artwork-panel">
+      {artwork ? <><img src={artwork.image_url} alt={monster.name + " illustration"} style={{ maxWidth: "100%", maxHeight: 320, objectFit: "contain" }} /><p className="muted">Artwork: {artwork.creator} · <a href={artwork.license_url} target="_blank" rel="noopener noreferrer">{artwork.license}</a> · <a href={artwork.source_url} target="_blank" rel="noopener noreferrer">Original source</a></p></> : <p className="muted">No artwork selected yet. <a href={"https://commons.wikimedia.org/w/index.php?search=" + encodeURIComponent(monster.name + " fantasy creature") + "&title=Special:MediaSearch&type=image"} target="_blank" rel="noopener noreferrer">Search Wikimedia Commons</a> (verify license and creature match before reuse).</p>}
+    </section><p>{monster.size} {monster.type} · CR {monster.challenge_rating} · {custom ? "Custom" : "Published"}</p>
     <div className="stats"><span>AC <b>{monster.armor_class}</b></span><span>HP <b>{monster.hit_points}</b></span><span>Initiative <b>{monster.initiative_bonus >= 0 ? "+" : ""}{monster.initiative_bonus}</b></span></div>
     {monster.speed && <p><b>Speed:</b> {monster.speed}</p>}
     {monster.abilities && <div className="abilities ability-display">{ABILITY_KEYS.map(k => <div key={k}><b>{k.toUpperCase()}</b><span>{monster.abilities![k]} ({modifier(monster.abilities![k])})</span></div>)}</div>}
@@ -96,6 +101,7 @@ function Detail({ monster, onEdit, onCopy, onDelete }: { monster: Monster; onEdi
 }
 export default function App() {
   const [published, setPublished] = useState<Monster[]>([]);
+  const [artwork, setArtwork] = useState<ArtworkEntry[]>([]);
   const [custom, setCustom] = useState<Monster[]>(readCustom);
   const [query, setQuery] = useState("");
   const [sourceFilter, setSourceFilter] = useState("all");
@@ -112,6 +118,13 @@ export default function App() {
     fetch(catalogUrl).then(r => { if (!r.ok) throw new Error("Catalog could not be loaded: " + catalogUrl); return r.json(); })
       .then((data: MonsterCatalog) => setPublished(Array.isArray(data.monsters) ? data.monsters.filter(isMonster) : []))
       .catch(e => setError(String(e)));
+  }, []);
+  useEffect(() => {
+    fetch("/data/monster-artwork.json").then(r => {
+      if (!r.ok) throw new Error("Artwork manifest unavailable");
+      return r.json();
+    }).then((data: ArtworkManifest) => setArtwork(Array.isArray(data.artworks) ? data.artworks : []))
+      .catch(() => setArtwork([]));
   }, []);
   useEffect(() => { try { localStorage.setItem(LOCAL_KEY, JSON.stringify(custom)); } catch { setError("Local save failed. Export your custom JSON backup immediately."); } }, [custom]);
   const allMonsters = useMemo(() => [...published, ...custom], [published, custom]);
@@ -173,7 +186,7 @@ export default function App() {
     {error && <p role="alert" className="error">{error}</p>}
     <div className="layout"><section className="list"><h2>Monsters</h2>{monsters.length === 0 && <p className="muted">{allMonsters.length === 0 ? "No monsters in the catalog. Create a custom monster to begin." : "No monsters match the current filters."}</p>}
       {monsters.map(m => <button key={m.id} className={"monster " + (selectedId === m.id ? "active" : "")} onClick={() => { setSelectedId(m.id); setEditing(null); }}><strong>{m.name}</strong><small>{m.type} · CR {m.challenge_rating} · {m.source.type === "homebrew" ? "Custom" : "Published"}</small></button>)}</section>
-      <section className="detail">{editing ? <Editor key={editing.id} initial={editing} onSave={saveCustom} onCancel={() => setEditing(null)} /> : selected ? <Detail monster={selected} onEdit={() => setEditing(selected)} onCopy={() => setEditing(newMonster(selected))} onDelete={() => deleteCustom(selected)} /> : <p className="muted">Select a monster to inspect its record, or create a custom monster.</p>}</section></div>
+      <section className="detail">{editing ? <Editor key={editing.id} initial={editing} onSave={saveCustom} onCancel={() => setEditing(null)} /> : selected ? <Detail monster={selected} artwork={artwork.find(a => a.monster_id === selected.id)} onEdit={() => setEditing(selected)} onCopy={() => setEditing(newMonster(selected))} onDelete={() => deleteCustom(selected)} /> : <p className="muted">Select a monster to inspect its record, or create a custom monster.</p>}</section></div>
     <footer>Custom records are saved in this browser. Export custom JSON regularly for backup. Published definitions remain read-only.</footer>
   </main>;
 }
