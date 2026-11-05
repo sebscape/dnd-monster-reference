@@ -102,9 +102,9 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
       const refs = await loadReferences();
       const response = await fetch("/.netlify/functions/generate-artwork", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, model: settings.model.trim() || "gpt-image-2.5-flare", prompt, references: refs })
+        body: JSON.stringify({ token, model: settings.model.trim() || "gpt-image-1.5", prompt, references: refs })
       });
-      const result: { image?: string; error?: string } = await response.json();
+      const result: { image?: string; error?: string } = await response.json().catch(() => ({ error: "Generation service returned an unexpected response. On localhost, use Netlify Dev or the deployed site." }));
       if (!response.ok || !result.image?.startsWith("data:image/png;base64,")) throw new Error(result.error || "Image generation failed.");
       setCandidate(result.image);
       setNotice("AI image generated. Review it before approving; each generation may incur an API charge.");
@@ -135,9 +135,9 @@ export default function MonsterArtwork({ monster, publishedUrl }: { monster: Mon
       <div className="actions"><button type="button" onClick={() => void navigator.clipboard.writeText(prompt).then(() => setNotice("Prompt copied.")).catch(() => setError("Clipboard unavailable."))}>Copy prompt</button></div>
       {!unlockedToken && <label>Encryption password to unlock API token<input type="password" autoComplete="off" value={unlockPassword} onChange={e => setUnlockPassword(e.target.value)} placeholder="Enter encryption password for this session" /></label>}
       <div className="actions"><button type="button" disabled={generating || (!unlockedToken && !unlockPassword)} onClick={() => void generate()}>{generating ? "Generating image…" : "Generate AI artwork (paid API request)"}</button>{unlockedToken && <button type="button" onClick={() => { setUnlockedToken(null); setUnlockPassword(""); setNotice("API token locked."); }}>Lock API token</button>}</div>
-      <p className="muted">Step 2: Preview the AI result or import an image manually. Approve only when satisfied. Approved images are saved locally by monster UUID.</p>
+      <p className="muted">Step 2: Preview the AI result or import an image manually. Approve only when satisfied. Approved images are saved locally by monster UUID. The standard Vite development server does not run Netlify Functions.</p>
       <label className="upload">Choose candidate image<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e => { void previewFile(e.target.files?.[0]); e.target.value = ""; }} /></label>
-      {candidate && <div style={{ marginTop: 12 }}><img src={candidate} alt="Candidate artwork awaiting approval" style={{ maxWidth: "100%", maxHeight: 320, objectFit: "contain" }} /><div className="actions"><button type="button" onClick={() => void approve()}>Approve artwork</button><button type="button" onClick={() => { setCandidate(null); setNotice("Candidate discarded."); }}>Discard candidate</button></div></div>}
+      {candidate && <div style={{ marginTop: 12 }}><img src={candidate} alt="Candidate artwork awaiting approval" style={{ maxWidth: "100%", maxHeight: 320, objectFit: "contain" }} /><div className="actions"><button type="button" onClick={() => void approve()}>Approve artwork</button><button type="button" onClick={() => { const link = document.createElement("a"); link.href = candidate; link.download = monster.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-candidate.png"; link.click(); }}>Download candidate</button><button type="button" onClick={() => { setCandidate(null); setNotice("Candidate discarded."); }}>Discard candidate</button></div></div>}
       {error && <p className="error" role="alert">{error}</p>}
       {notice && <p role="status">{notice}</p>}
     </div>}
