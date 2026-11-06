@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="robots" content="noindex" />
+<title>Monster Reference Bridge</title>
+</head>
+<body>
+<!--
+  Storage bridge for companion apps (see dnd-battle-tracker DESIGN.md).
+  A companion app loads this page in a hidden iframe and asks for data with
+  postMessage. The page is READ-ONLY: it never writes to this site's storage.
+  Only the origins listed in ALLOWED_ORIGINS get an answer.
+-->
+<script>
+(() => {
+  "use strict";
+  const PROTOCOL = "dnd-bridge";
+  const BRIDGE_VERSION = 1;
+  const SCHEMA_VERSION = "1.2.0";
+  const ALLOWED_ORIGINS = new Set([
+    "https://dnd-battle-tracker.c2ma.com",
+    "http://localhost:5174", // battle tracker dev server
+  ]);
+  // Must match src/App.tsx and src/MonsterArtwork.tsx.
+  const CUSTOM_KEY = "dnd-monster-reference-custom-v1";
+  const ART_DB = "dnd-monster-reference-approved-artwork-v1";
+  const ART_STORE = "images";
+  const MAX_ARTWORK_IDS = 500;
+
+  function readCustomMonsters() {
+    const raw = localStorage.getItem(CUSTOM_KEY);
+    if (!raw) return [];
+    const data = JSON.parse(raw);
+    return Array.isArray(data) ? data.filter(m => m && typeof m === "object" && m.source && m.source.type === "homebrew") : [];
+  }
+
+  function openArtworkDb() {
+    return new Promise((resolve, reject) => {
+      // Open without a version so this page never creates or upgrades the database.
+      const req = indexedDB.open(ART_DB);
+      req.onupgradeneeded = () => { req.transaction.abort(); };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => {
+        // AbortError here means the database doesn't exist yet: no artwork saved.
+        if (req.error && req.error.name === "AbortError") resolve(null);
+        else reject(req.error);
+      };
+    });
+  }
+
+  async function readArtwork(ids) {
+    const db = await openArtworkDb();
+    if (!db) return {};
+    try {
+      if (!db.objectStoreNames.contains(ART_STORE)) return {};
+      return await new Promise((resolve, reject) => {
+        const out = {};
+        const store = db.transaction(ART_STORE, "readonly").objectStore(ART_STORE);
+        const finish = () => resolve(out);
+        if (ids === null) {
+          const req = store.getAll();
+          req.onsuccess = () => { for (const r of req.result) if (r && typeof r.dataUrl === "string") out[r.monsterId] = r.dataUrl; finish(); };
+          req.onerror = () => reject(req.error);
+          return;
+        }
+        let pending = ids.length;
+        if (!pending) { finish(); return; }
+        for (const id of ids) {
+          const req = store.get(id);
+          req.onsuccess = () => { if (req.result && typeof req.result.dataUrl === "string") out[id] = req.result.dataUrl; if (--pending === 0) finish(); };
+          req.onerror = () => reject(req.error);
+        }
+      });
+    } finally { db.close(); }
+  }
+
+  async function artworkIds() {
+    const db = await openArtworkDb();
+    if (!db) return [];
+    try {
+      if (!db.objectStoreNames.contains(ART_STORE)) return [];
+      return await new Promise((resolve, reject) => {
+        const req = db.transaction(ART_STORE, "readonly").objectStore(ART_STORE).getAllKeys();
+        req.onsuccess = () => resolve(req.result.map(String));
+        req.onerror = () => reject(req.error);
+      });
+    } finally { db.close(); }
+  }
+
+  const handlers = {
+    async hello() {
+      return {
+        bridgeVersion: BRIDGE_VERSION,
+        schemaVersion: SCHEMA_VERSION,
+        // Diagnostics for the storage-sharing test.
+        storage: {
+          customMonsterCount: readCustomMonsters().length,
+          artworkCount: (await artworkIds()).length,
+          localStorageKeys: Object.keys(localStorage).filter(k => k.startsWith("dnd-monster-reference")).sort(),
+        },
+      };
+    },
+    async listCustomMonsters() {
+      return { monsters: readCustomMonsters() };
+    },
+    async getArtwork(payload) {
+      const ids = payload && Array.isArray(payload.monsterIds) ? payload.monsterIds : null;
+      if (ids && (ids.length > MAX_ARTWORK_IDS || !ids.every(id => typeof id === "string"))) throw new Error("monsterIds must be up to " + MAX_ARTWORK_IDS + " strings.");
+      return { artwork: await readArtwork(ids) };
+    },
+  };
+
+  window.addEventListener("message", async event => {
+    if (!ALLOWED_ORIGINS.has(event.origin) || event.source !== window.parent) return;
+    const msg = event.data;
+    if (!msg || msg.protocol !== PROTOCOL || typeof msg.id !== "string" || typeof msg.type !== "string") return;
+    const reply = body => event.source.postMessage({ protocol: PROTOCOL, id: msg.id, ...body }, event.origin);
+    const handler = Object.prototype.hasOwnProperty.call(handlers, msg.type) ? handlers[msg.type] : null;
+    if (!handler) { reply({ ok: false, error: "Unknown request type: " + msg.type }); return; }
+    try { reply({ ok: true, result: await handler(msg.payload) }); }
+    catch (e) { reply({ ok: false, error: e && e.message ? e.message : String(e) }); }
+  });
+})();
+</script>
+</body>
+</html>

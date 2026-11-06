@@ -41,6 +41,14 @@ A browser-based, searchable Monster Manual for Dungeon Masters. It ships a read-
 - The Netlify function receives the token per request and must never store, log, or return it.
 - Never commit `.env*`, `custom-monsters.json`, `private-artwork/`, or `staging/`.
 
+## Storage bridge for companion apps
+
+`public/bridge.html` lets [dnd-battle-tracker](https://github.com/sebscape/dnd-battle-tracker) read custom monsters and approved artwork through a hidden iframe and `postMessage`. Protocol details are in that repo's DESIGN.md.
+
+- It is **read-only** and only answers origins on its `ALLOWED_ORIGINS` list.
+- It reads the same storage keys as the app (`dnd-monster-reference-custom-v1`, IndexedDB `dnd-monster-reference-approved-artwork-v1` / `images`). **If you rename or restructure these, update `bridge.html` too**, or the battle tracker silently loses custom data.
+- Don't add headers that block framing (`X-Frame-Options`, a restrictive `frame-ancestors`) for this page.
+
 ## SRD import pipeline rules
 
 - Source of truth is the official SRD 5.2.1 PDF. **Do not substitute SRD 5.1 statistics.**
