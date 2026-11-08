@@ -13,7 +13,7 @@ export default async function handler(request) {
     const id = url.searchParams.get("id");
     const secret = request.headers.get("X-Artwork-Job-Secret");
     if (!validId(id) || !validSecret(secret)) return json({ error: "Invalid job credentials." }, 400);
-    const store = getStore("artwork-generation-jobs");
+    const store = getStore({ name: "artwork-generation-jobs", consistency: "strong" });
     const job = await store.get(key(id), { type: "json" });
     if (request.method === "POST") {
       if (job) return json({ error: "Job already exists." }, 409);
