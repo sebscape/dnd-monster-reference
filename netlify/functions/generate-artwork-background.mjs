@@ -12,7 +12,7 @@ export default async function handler(request) {
     ({ id, secret } = payload);
     if (typeof id !== "string" || !/^[a-f0-9-]{36}$/.test(id) ||
         typeof secret !== "string" || !/^[a-f0-9-]{36}$/.test(secret)) return;
-    const store = getStore("artwork-generation-jobs");
+    const store = getStore({ name: "artwork-generation-jobs", consistency: "strong" });
     const key = "job-" + id;
     const current = await store.get(key, { type: "json" });
     if (!current || current.secret !== secret || current.state !== "pending") return;
