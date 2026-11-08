@@ -135,6 +135,7 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
       const refs = await loadReferences();
       if (job.canceled) return;
       const payload = { id: job.id, secret: job.secret, token, model: settings.model.trim() || "gpt-image-1.5", prompt, references: refs };
+      if (new Blob([JSON.stringify(payload)]).size > 5 * 1024 * 1024) throw new Error("Style reference images make this request too large for Netlify. Reduce their sizes or remove some references before generating.");
       // The Vite development server uses the existing synchronous handler.
       // Netlify production uses background functions to avoid gateway timeouts.
       if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
@@ -156,11 +157,17 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
         });
         if (!started.ok) throw new Error("Could not start background generation (HTTP " + started.status + ").");
         const deadline = Date.now() + 14 * 60 * 1000;
+        let missingPolls = 0;
         while (!job.canceled && Date.now() < deadline) {
           await new Promise(resolve => setTimeout(resolve, 2500));
           if (job.canceled) return;
           const response = await fetch(statusUrl, { headers });
-          if (!response.ok) throw new Error("Unable to check artwork generation status.");
+          if (response.status === 404 && missingPolls++ < 5) continue;
+          if (!response.ok) {
+            const details: { error?: string } = await response.json().catch(() => ({}));
+            throw new Error(details.error || "Unable to check artwork generation status (HTTP " + response.status + ").");
+          }
+          missingPolls = 0;
           const result: { state: string; image?: string; error?: string } = await response.json();
           if (job.canceled) return;
           if (result.state === "done") {
