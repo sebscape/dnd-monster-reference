@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import type { Monster } from "./models/monster";
 import { decryptToken, loadSettings } from "./artworkSettings";
@@ -86,13 +86,14 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
   const [unlockPassword, setUnlockPassword] = useState("");
   const [unlockedToken, setUnlockedToken] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
+  const activeJob = useRef<{ id: string; secret: string; canceled: boolean } | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   useEffect(() => {
     let active = true;
     setApproved(undefined); setCandidate(null); setPrompt(monsterPrompt(monster, "")); setError(""); setNotice(""); setShowPrompt(false); setMode("upload");
     void readImage(monster.id).then(v => { if (active) setApproved(v); }).catch(() => { if (active) setError("Could not load local approved artwork."); });
-    return () => { active = false; };
+    return () => { active = false; const job = activeJob.current; if (job) { job.canceled = true; void cancelRemoteJob(job); activeJob.current = null; } };
   }, [monster.id]);
   async function previewFile(file: File | undefined) {
     if (!file) return;
@@ -103,30 +104,84 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
     try { setCandidate(await fileData(file)); }
     catch { setError("Could not read image."); }
   }
+  async function cancelRemoteJob(job: { id: string; secret: string }) {
+    try {
+      await fetch("/.netlify/functions/artwork-job?id=" + encodeURIComponent(job.id), {
+        method: "DELETE", headers: { "X-Artwork-Job-Secret": job.secret }
+      });
+    } catch { /* Cancellation is best-effort; ignored results cannot replace artwork. */ }
+  }
+  function cancelGeneration() {
+    const job = activeJob.current;
+    if (job) { job.canceled = true; activeJob.current = null; void cancelRemoteJob(job); }
+    setGenerating(false);
+    setNotice("Generation canceled. API charges may still apply if processing started.");
+    setError("");
+  }
   async function generate() {
-    if (generating) return;
+    if (generating || activeJob.current) return;
     if (!prompt.trim()) { setError("Enter an image prompt before generating."); return; }
     setError(""); setNotice("");
     const settings = loadSettings();
     if (settings.provider !== "OpenAI") { setError("Select OpenAI in App Configuration."); return; }
     if (!settings.encryptedToken) { setError("Configure an encrypted API token first."); return; }
+    const job = { id: crypto.randomUUID(), secret: crypto.randomUUID(), canceled: false };
+    activeJob.current = job;
     setGenerating(true);
     try {
       const token = unlockedToken ?? await decryptToken(settings.encryptedToken, unlockPassword);
+      if (job.canceled) return;
       if (!unlockedToken) { setUnlockedToken(token); setUnlockPassword(""); }
       const refs = await loadReferences();
-      const response = await fetch("/.netlify/functions/generate-artwork", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, model: settings.model.trim() || "gpt-image-1.5", prompt, references: refs })
-      });
-      const result: { image?: string; error?: string } = await response.json().catch(() => ({ error: "Generation service returned an unexpected response. On localhost, use Netlify Dev or the deployed site." }));
-      if (!response.ok || !result.image?.startsWith("data:image/png;base64,")) throw new Error(result.error || "Image generation failed.");
-      setCandidate(result.image);
-      setNotice("AI image generated. Review it before approving; each generation may incur an API charge.");
+      if (job.canceled) return;
+      const payload = { id: job.id, secret: job.secret, token, model: settings.model.trim() || "gpt-image-1.5", prompt, references: refs };
+      // The Vite development server uses the existing synchronous handler.
+      // Netlify production uses background functions to avoid gateway timeouts.
+      if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+        const response = await fetch("/.netlify/functions/generate-artwork", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+        });
+        const result: { image?: string; error?: string } = await response.json();
+        if (job.canceled) return;
+        if (!response.ok || !result.image?.startsWith("data:image/png;base64,")) throw new Error(result.error || "Image generation failed.");
+        setCandidate(result.image);
+      } else {
+        const statusUrl = "/.netlify/functions/artwork-job?id=" + encodeURIComponent(job.id);
+        const headers = { "X-Artwork-Job-Secret": job.secret };
+        const created = await fetch(statusUrl, { method: "POST", headers });
+        if (!created.ok) throw new Error("Could not create artwork job.");
+        if (job.canceled) { void cancelRemoteJob(job); return; }
+        const started = await fetch("/.netlify/functions/generate-artwork-background", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+        });
+        if (!started.ok) throw new Error("Could not start background generation (HTTP " + started.status + ").");
+        const deadline = Date.now() + 14 * 60 * 1000;
+        while (!job.canceled && Date.now() < deadline) {
+          await new Promise(resolve => setTimeout(resolve, 2500));
+          if (job.canceled) return;
+          const response = await fetch(statusUrl, { headers });
+          if (!response.ok) throw new Error("Unable to check artwork generation status.");
+          const result: { state: string; image?: string; error?: string } = await response.json();
+          if (job.canceled) return;
+          if (result.state === "done") {
+            if (!result.image?.startsWith("data:image/png;base64,")) throw new Error("Generated image is missing.");
+            setCandidate(result.image);
+            break;
+          }
+          if (result.state === "error") throw new Error(result.error || "Image generation failed.");
+          if (result.state === "canceled") return;
+        }
+        if (Date.now() >= deadline && !job.canceled) throw new Error("Generation exceeded the waiting limit.");
+      }
+      if (!job.canceled) setNotice("AI image generated. Review it before approving; each generation may incur an API charge.");
     } catch (e) {
-      if (e instanceof DOMException && e.name === "OperationError") setError("Incorrect encryption password. Try again.");
-      else setError(e instanceof Error ? e.message : "Image generation failed.");
-    } finally { setGenerating(false); }
+      if (!job.canceled) {
+        if (e instanceof DOMException && e.name === "OperationError") setError("Incorrect encryption password. Try again.");
+        else setError(e instanceof Error ? e.message : "Image generation failed.");
+      }
+    } finally {
+      if (activeJob.current === job) { activeJob.current = null; setGenerating(false); }
+    }
   }
   async function approve() {
     if (!candidate) return;
@@ -182,7 +237,7 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
       </div>
       {!showPrompt ? <div className="artwork-summary" style={{ flex: "1 1 340px", minWidth: 0 }}>{summary}</div> : <div style={{ flex: "1 1 340px", minWidth: 0, border: "1px solid #64748b", borderRadius: 8, padding: 16 }}>
         <div className="artwork-tabs" role="tablist" aria-label="Artwork source">
-          <button className="artwork-tab" type="button" role="tab" aria-selected={mode === "upload"} onClick={() => setMode("upload")}>Upload</button>
+          <button className="artwork-tab" type="button" role="tab" aria-selected={mode === "upload"} onClick={() => { if (generating) cancelGeneration(); setMode("upload"); }}>Upload</button>
           <button className="artwork-tab" type="button" role="tab" aria-selected={mode === "ai"} onClick={() => setMode("ai")}>AI Generate</button>
         </div>
         {mode === "upload" ? <div role="tabpanel">
@@ -216,8 +271,8 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
         {error && <p className="error" role="alert">{error}</p>}
         {notice && <p role="status">{notice}</p>}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginTop: 20, paddingTop: 12, borderTop: "1px solid #64748b" }}>
-          <button type="button" onClick={() => { setCandidate(null); setError(""); setNotice(""); setShowPrompt(false); }}>Cancel</button>
-          <button type="button" disabled={!candidate} onClick={() => void approve()}>Save</button>
+          <button type="button" onClick={() => { if (generating) cancelGeneration(); setCandidate(null); setError(""); setNotice(""); setShowPrompt(false); }}>{generating ? "Cancel Generation" : "Cancel"}</button>
+          <button type="button" disabled={generating || !candidate} onClick={() => void approve()}>Save</button>
         </div>
       </div>}
     </div>
