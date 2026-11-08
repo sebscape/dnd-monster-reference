@@ -206,9 +206,12 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
             : <button type="button" onClick={() => { setUnlockedToken(null); setUnlockPassword(""); setNotice("API token locked."); }}>Lock API token</button>}
           </div>
         </div>}
-        {candidate && <div style={{ marginTop: 16 }}>
-          <div style={{ display: "flex", justifyContent: "center", width: "100%" }}><img src={candidate} alt="Candidate artwork awaiting approval" style={{ display: "block", maxWidth: "100%", maxHeight: 240, objectFit: "contain" }} /></div>
-
+        {(generating || candidate) && <div style={{ marginTop: 16 }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", minHeight: 240 }}>
+            {generating
+              ? <img src="/images/iridescent-spinner.gif" alt="Generating artwork, please wait" role="status" style={{ display: "block", height: 240, maxWidth: "100%", objectFit: "contain" }} />
+              : <img src={candidate} alt="Candidate artwork awaiting approval" style={{ display: "block", maxWidth: "100%", maxHeight: 240, objectFit: "contain" }} />}
+          </div>
         </div>}
         {error && <p className="error" role="alert">{error}</p>}
         {notice && <p role="status">{notice}</p>}
