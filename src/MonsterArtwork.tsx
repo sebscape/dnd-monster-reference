@@ -166,6 +166,8 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
           if (result.state === "done") {
             if (!result.image?.startsWith("data:image/png;base64,")) throw new Error("Generated image is missing.");
             setCandidate(result.image);
+            // Remove the server-side image once the browser has received it.
+            void cancelRemoteJob(job);
             break;
           }
           if (result.state === "error") throw new Error(result.error || "Image generation failed.");
