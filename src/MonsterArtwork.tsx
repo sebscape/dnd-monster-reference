@@ -210,7 +210,7 @@ export default function MonsterArtwork({ monster, publishedUrl, summary }: { mon
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", minHeight: 240 }}>
             {generating
               ? <img src="/images/iridescent-spinner.gif" alt="Generating artwork, please wait" role="status" style={{ display: "block", height: 240, maxWidth: "100%", objectFit: "contain" }} />
-              : <img src={candidate} alt="Candidate artwork awaiting approval" style={{ display: "block", maxWidth: "100%", maxHeight: 240, objectFit: "contain" }} />}
+              : <img src={candidate ?? undefined} alt="Candidate artwork awaiting approval" style={{ display: "block", maxWidth: "100%", maxHeight: 240, objectFit: "contain" }} />}
           </div>
         </div>}
         {error && <p className="error" role="alert">{error}</p>}
