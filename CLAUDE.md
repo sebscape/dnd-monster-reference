@@ -58,6 +58,7 @@ A browser-based, searchable Monster Manual for Dungeon Masters. It ships a read-
 - Source of truth is the official SRD 5.2.1 PDF. **Do not substitute SRD 5.1 statistics.**
 - Staging output goes to `staging/` (gitignored). Only `scripts/publish_approved_srd_catalog.py` writes to `public/data/published-monsters.json`, and the result must be reviewed in `git diff` before committing.
 - Keep the CC BY 4.0 attribution and the `modifications` note in the catalog's `source` block accurate.
+- **Environment tags** are the one exception to "only the publish script writes the catalog": `data/environment-tags.csv` (one row per monster: name, type, CR, environments separated by "; ", id) is the reviewed source, and `scripts/apply_environment_tags.py` copies it into each monster's `tags` (use `--check` first). The SRD has no habitat data; these were written for this project. Environments: Arctic, Coastal, Desert, Forest, Grassland, Hill, Mountain, Swamp, Underdark, Underwater, Urban, Planar. The battle tracker's encounter generator reads them, and custom monsters can use the same names as tags.
 - Known provisional interpretation: Young White Dragon's Intelligence save is printed as an unsigned "2" (PDF page 340) and is recorded as +2.
 
 ## Artwork prompts
