@@ -54,7 +54,7 @@ function readAsDataUrl(file: File): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
-export default function ArtworkConfiguration({ onClose, onNewMonster, onExportCustom, onImportCustom, customError }: { onClose: () => void; onNewMonster: () => void; onExportCustom: () => void; onImportCustom: (file: File | undefined) => void; customError: string }) {
+export default function ArtworkConfiguration({ onClose, onNewMonster, onExportCustom, onImportCustom, onPurgeCustom, customCount, customMessage, customError }: { onClose: () => void; onNewMonster: () => void; onExportCustom: () => void; onImportCustom: (file: File | undefined) => void; onPurgeCustom: () => void; customCount: number; customMessage: string; customError: string }) {
   const [settings, setSettings] = useState<Settings>(loadSettings);
   const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
@@ -120,7 +120,9 @@ export default function ArtworkConfiguration({ onClose, onNewMonster, onExportCu
       <button type="button" onClick={onNewMonster}>+ New custom monster</button>
       <button type="button" onClick={onExportCustom}>Export custom JSON</button>
       <label className="upload">Import custom JSON<input type="file" accept=".json,application/json" onChange={e => { onImportCustom(e.target.files?.[0]); e.target.value = ""; }} /></label>
+      <button type="button" className="danger small-button" disabled={!customCount} title={customCount ? "Delete all " + customCount + " custom monsters from this browser" : "No custom monsters to delete"} onClick={onPurgeCustom}>Delete all custom monsters</button>
     </div>
+    {customMessage && <p className="success" role="status">{customMessage}</p>}
     {customError && <p className="error" role="alert">{customError}</p>}
     <p className="muted">Configure artwork generation preferences. Generation requests are sent only when you click Generate AI artwork on a monster.</p>
     <div className="fields">

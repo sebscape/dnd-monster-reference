@@ -3,6 +3,8 @@ import ArtworkConfiguration from "./ArtworkConfiguration";
 import MonsterArtwork, { monsterVisualDescription } from "./MonsterArtwork";
 import type { Monster, MonsterCatalog, NamedFeature } from "./models/monster";
 import { ABILITY_KEYS, isMonster, newMonster, SCHEMA_VERSION } from "./models/monster";
+import CustomImportDialog, { PurgeDialog } from "./CustomImportDialog";
+import { describeSummary, mergeImport, readImportFile } from "./models/customImport";
 
 const LOCAL_KEY = "dnd-monster-reference-custom-v1";
 interface ArtworkEntry { monster_id: string; image_url: string; creator: string; license: string; license_url: string; source_url: string; }
@@ -161,16 +163,29 @@ export default function App() {
     if (!window.confirm("Delete " + monster.name + "? Export a backup first if you want to keep it.")) return;
     setCustom(prev => prev.filter(m => m.id !== monster.id)); setSelectedId(null);
   }
+  // Import: read the file, then show the preview (Add or Replace) and, for duplicates, the per-monster choices.
+  const [pendingImport, setPendingImport] = useState<{ fileName: string; monsters: Monster[] } | null>(null);
+  const [importMessage, setImportMessage] = useState("");
+  const [purging, setPurging] = useState(false);
   async function importCustom(file: File | undefined) {
     if (!file) return;
+    setImportMessage("");
     try {
-      const data: unknown = JSON.parse(await file.text());
-      const raw = Array.isArray(data) ? data : (data as MonsterCatalog)?.monsters;
-      if (!Array.isArray(raw) || !raw.every(isMonster) || raw.some(m => m.source.type !== "homebrew")) throw new Error("Expected a valid custom monster catalog");
-      const ids = new Set([...published, ...custom].map(m => m.id));
-      if (raw.some(m => ids.has(m.id)) || new Set(raw.map(m => m.id)).size !== raw.length) throw new Error("Duplicate monster UUID detected; no records imported");
-      setCustom(prev => [...prev, ...raw]); setError("");
-    } catch (e) { setError("Import failed: " + String(e)); }
+      const monsters = readImportFile(await file.text(), published);
+      setPendingImport({ fileName: file.name, monsters }); setError("");
+    } catch (e) { setError("Import failed: " + (e instanceof Error ? e.message : String(e)) + " Nothing was imported."); }
+  }
+  function finishImport(monsters: Monster[], message: string) {
+    setCustom(monsters);
+    if (selectedId && !published.some(m => m.id === selectedId) && !monsters.some(m => m.id === selectedId)) setSelectedId(null);
+    setPendingImport(null); setImportMessage(message); setError("");
+  }
+  const exportCustom = () => downloadJson("custom-monsters.json", { schema_version: SCHEMA_VERSION, monsters: custom });
+  function purgeCustom() {
+    const n = custom.length;
+    setCustom([]);
+    if (selectedId && !published.some(m => m.id === selectedId)) setSelectedId(null);
+    setPurging(false); setImportMessage("Deleted all " + n + " custom monster" + (n === 1 ? "" : "s") + "."); setError("");
   }
   return <main>
     <header><div className="app-brand"><img className="app-brand-logo" src="/images/monster-reference-logo.png" alt="Monster Reference mascot logo" /><div><h1>D&D Monster Reference</h1><p>Published catalog + private custom monsters</p></div></div><div style={{ display: "flex", alignItems: "center", gap: 16 }}><span className="count">{published.length} published · {custom.length} custom</span><button type="button" aria-label={showConfiguration ? "Return to monsters" : "App Configuration"} title={showConfiguration ? "Return to monsters" : "App Configuration"} aria-pressed={showConfiguration} onClick={() => { setShowConfiguration(v => !v); setEditing(null); }} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: 8, width: 40, height: 40 }}><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06-1.87 1.87-.06-.06A1.7 1.7 0 0 0 16 18.4a1.7 1.7 0 0 0-1 .98V21h-6v-1.62a1.7 1.7 0 0 0-1-.98 1.7 1.7 0 0 0-1.87.34l-.06.06-1.87-1.87.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.98-1H2v-4h1.62a1.7 1.7 0 0 0 .98-1 1.7 1.7 0 0 0-.34-1.87L4.2 7.07 6.07 5.2l.06.06A1.7 1.7 0 0 0 8 5.6a1.7 1.7 0 0 0 1-.98V3h6v1.62a1.7 1.7 0 0 0 1 .98 1.7 1.7 0 0 0 1.87-.34l.06-.06 1.87 1.87-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 .98 1H22v4h-1.62a1.7 1.7 0 0 0-.98 1Z"/></svg></button></div></header>
@@ -178,8 +193,11 @@ export default function App() {
     {showConfiguration ? <ArtworkConfiguration
       onClose={() => setShowConfiguration(false)}
       onNewMonster={() => { setShowConfiguration(false); setEditing(newMonster()); }}
-      onExportCustom={() => downloadJson("custom-monsters.json", { schema_version: SCHEMA_VERSION, monsters: custom })}
+      onExportCustom={exportCustom}
       onImportCustom={file => { void importCustom(file); }}
+      onPurgeCustom={() => setPurging(true)}
+      customCount={custom.length}
+      customMessage={importMessage}
       customError={error}
     /> : <>
     <section className="filter-panel" aria-label="Monster filters">
@@ -197,6 +215,11 @@ export default function App() {
       {monsters.map(m => <button key={m.id} className={"monster " + (selectedId === m.id ? "active" : "")} onClick={() => { setSelectedId(m.id); setEditing(null); }}><strong>{m.name}</strong><small>{m.type} · CR {m.challenge_rating} · {m.source.type === "homebrew" ? "Custom" : "Published"}</small></button>)}</section>
       <section className="detail">{editing ? <Editor key={editing.id} initial={editing} onSave={saveCustom} onCancel={() => setEditing(null)} /> : selected ? <Detail monster={selected} artwork={artwork.find(a => a.monster_id === selected.id)} onEdit={() => setEditing(selected)} onCopy={() => setEditing(newMonster(selected))} onDelete={() => deleteCustom(selected)} /> : <p className="muted">Select a monster to inspect its record, or create a custom monster.</p>}</section></div>
     </>}
+    {pendingImport && <CustomImportDialog fileName={pendingImport.fileName} incoming={pendingImport.monsters} existing={custom}
+      onCancel={() => setPendingImport(null)}
+      onReplace={() => finishImport(pendingImport.monsters, describeSummary({ added: 0, overwritten: 0, keptBoth: 0, skipped: 0, replaced: pendingImport.monsters.length }))}
+      onAdd={choices => { const { monsters, summary } = mergeImport(custom, pendingImport.monsters, choices); finishImport(monsters, describeSummary(summary)); }} />}
+    {purging && <PurgeDialog count={custom.length} onExport={exportCustom} onCancel={() => setPurging(false)} onConfirm={purgeCustom} />}
     <footer>Custom records are saved in this browser. Export custom JSON regularly for backup. Published definitions remain read-only.</footer>
   </main>;
 }
