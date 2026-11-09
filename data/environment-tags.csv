@@ -1,0 +1,331 @@
+name,type,challenge_rating,environments,id
+Aboleth,Aberration,10,Underdark; Underwater,2ac9787b-c031-5404-86e4-640be17d3fed
+Adult Black Dragon,Dragon (Chromatic),14,Swamp,9d57f067-dfb6-5a6b-9fd3-7e7adaf4e255
+Adult Blue Dragon,Dragon (Chromatic),16,Coastal; Desert,b2cb3de8-a44e-586e-bc7b-312058aeb36a
+Adult Brass Dragon,Dragon (Metallic),13,Desert,34a8e155-ea72-5acc-8934-23d9e06d0372
+Adult Bronze Dragon,Dragon (Metallic),15,Coastal; Underwater,e1f0d4ba-7775-5f6b-8c95-329eeeca6eff
+Adult Copper Dragon,Dragon (Metallic),14,Hill; Mountain,55fc264a-865a-5fc6-bf0e-96d9af717d32
+Adult Gold Dragon,Dragon (Metallic),17,Forest; Grassland; Mountain,6510816d-a391-5042-bfcc-a79f3d59b5b1
+Adult Green Dragon,Dragon (Chromatic),15,Forest,7e22e989-f292-558c-b017-b720853b1e62
+Adult Red Dragon,Dragon (Chromatic),17,Hill; Mountain,d9853f5e-346d-5f65-bab4-04a8c4c07767
+Adult Silver Dragon,Dragon (Metallic),16,Arctic; Mountain,9bb4eaaa-dd8a-5a44-bb88-ed6a3a066e4c
+Adult White Dragon,Dragon (Chromatic),13,Arctic; Mountain,4251704b-8f28-51fd-bc7b-da68dbd5aead
+Air Elemental,Elemental,5,Desert; Mountain; Planar,14d23c3e-6efc-5a84-a05e-6f24e87b4350
+Allosaurus,Beast (Dinosaur),2,Forest; Grassland,355e1ba4-cc49-5193-923a-02d758a57162
+Ancient Black Dragon,Dragon (Chromatic),21,Swamp,d8e27ac5-abe4-54f0-a201-8c5e973cfbef
+Ancient Blue Dragon,Dragon (Chromatic),23,Coastal; Desert,17da127c-1dca-529d-9172-dfd5e99bcad5
+Ancient Brass Dragon,Dragon (Metallic),20,Desert,c22a98ac-f51c-5834-b185-8b21c9ce70d3
+Ancient Bronze Dragon,Dragon (Metallic),22,Coastal; Underwater,52b593a3-e9c6-543c-9d74-f1962a98aac0
+Ancient Copper Dragon,Dragon (Metallic),21,Hill; Mountain,f5fc5880-c580-525e-a340-5450028013a2
+Ancient Gold Dragon,Dragon (Metallic),24,Forest; Grassland; Mountain,f533936f-7ece-5855-bee9-db33889eecb9
+Ancient Green Dragon,Dragon (Chromatic),22,Forest,33e37cd4-884b-57fc-964b-04ba381c7148
+Ancient Red Dragon,Dragon (Chromatic),24,Hill; Mountain,b9ed58eb-9a7b-5eeb-928b-849f326778d9
+Ancient Silver Dragon,Dragon (Metallic),23,Arctic; Mountain,70564760-299c-5c71-a5ce-2e67d409636f
+Ancient White Dragon,Dragon (Chromatic),20,Arctic; Mountain,8f35234e-cf14-5e91-a2d9-2787e1b78735
+Animated Armor,Construct,1,Underdark; Urban,0e5d9a3b-48ec-57c1-8233-50e783d7f78f
+Animated Flying Sword,Construct,1/4,Underdark; Urban,d48aaecf-2b9e-5a3a-842e-d006c6888646
+Animated Rug of Smothering,Construct,2,Underdark; Urban,82dab6a9-1a98-5c25-8f02-1b9ae8a3022f
+Ankheg,Monstrosity,2,Forest; Grassland; Hill,ea599866-1728-566b-8a6f-a59d73ad27a5
+Ankylosaurus,Beast (Dinosaur),3,Forest; Grassland,5697163a-31a5-519b-9077-2a0b57e36b67
+Ape,Beast,1/2,Forest,265b7b72-bb28-5882-913d-ff25823025f6
+Archelon,Beast (Dinosaur),4,Coastal; Underwater,167b781f-666f-5fb1-a449-55218f0f1ff4
+Archmage,Humanoid (Wizard),12,Urban; Planar,c9a44076-647d-5ae1-92a6-eb8c4148da6c
+Assassin,Humanoid,8,Urban,2ed15db0-6684-5c2d-932a-8e99bfc7e67c
+Awakened Shrub,Plant,0,Forest; Grassland,78e2e186-bc83-576b-94bb-40a85262d6a2
+Awakened Tree,Plant,2,Forest,c2e67d0f-cc42-536a-82d0-8e2b8f378d6f
+Axe Beak,Monstrosity,1/4,Desert; Grassland,9d27d1b3-7ee5-5523-95e2-dd734d1971cd
+Azer Sentinel,Elemental,2,Underdark; Planar,692ac0d3-800b-5527-8d14-3d79da95675a
+Baboon,Beast,0,Forest; Grassland; Hill,5ae54c46-7aa9-5beb-af87-32381d20fbdc
+Badger,Beast,0,Forest; Grassland; Hill,9cbab37a-236d-52a6-90a3-2c9a0fe7a9f3
+Balor,Fiend (Demon),19,Planar,5c3cd737-fb34-5397-bca3-92819037d1fd
+Bandit,Humanoid,1/8,Coastal; Desert; Forest; Grassland; Hill; Urban,7741a02f-110b-5bee-a4ab-c1affe7d83d0
+Bandit Captain,Humanoid,2,Coastal; Desert; Forest; Grassland; Hill; Urban,b7c68b45-ee5c-5a15-b300-df0db0b00822
+Barbed Devil,Fiend (Devil),5,Planar,1f315415-78ef-5196-92a5-540e8baceef9
+Basilisk,Monstrosity,3,Desert; Hill; Mountain; Underdark,da2bf59a-f0aa-5b1a-8011-e79e154c9266
+Bat,Beast,0,Forest; Underdark; Urban,6a4632c5-e129-53cf-b33f-e1dceab80a94
+Bearded Devil,Fiend (Devil),3,Planar,292f7a5d-6591-586a-9b74-a31530332cbe
+Behir,Monstrosity,11,Mountain; Underdark,7783029d-91ef-595e-9eaa-37f4aeb49d16
+Berserker,Humanoid,2,Arctic; Forest; Hill; Mountain,3b48b6e6-0c95-553e-9655-d438658eb57b
+Black Bear,Beast,1/2,Forest; Hill,14a43d87-0fdf-5035-9b03-4a6ff289eec2
+Black Dragon Wyrmling,Dragon (Chromatic),2,Swamp,35176729-9b39-5eb8-b5da-0ecbebba495c
+Black Pudding,Ooze,4,Underdark,fae49f1c-cdb1-5a73-b822-b17dc1ef417b
+Blink Dog,Fey,1/4,Forest; Grassland; Planar,e077a3ab-28b9-5d3f-a58c-504ebba6effc
+Blood Hawk,Beast,1/8,Coastal; Hill; Mountain,014ab85c-4c82-56ee-a1d8-f11e5b569a05
+Blue Dragon Wyrmling,Dragon (Chromatic),3,Coastal; Desert,3151a4ca-7409-50c9-a6ca-4206edc03231
+Boar,Beast,1/4,Forest; Grassland; Hill,8875cb3a-a2b1-512a-b7ac-71bf9daa3ea5
+Bone Devil,Fiend (Devil),9,Planar,7bde9ece-9856-5b6e-851a-b683450b5ea1
+Brass Dragon Wyrmling,Dragon (Metallic),1,Desert,6eee9338-6eac-5722-83f4-8cd4f26218c9
+Bronze Dragon Wyrmling,Dragon (Metallic),2,Coastal; Underwater,5349b569-4148-594b-822f-9f3c1b10fc9d
+Brown Bear,Beast,1,Arctic; Forest; Hill; Mountain,418bf722-5752-5853-b555-aa873671ff21
+Bugbear Stalker,Fey (Goblinoid),3,Forest; Hill; Underdark,e2939a70-8473-52a5-a934-da04c237da25
+Bugbear Warrior,Fey (Goblinoid),1,Forest; Hill; Underdark,05799874-29f8-5505-83ed-cd542d608f16
+Bulette,Monstrosity,5,Grassland; Hill; Mountain,b977c0fd-8f3a-5580-a3c9-95dd82527cfc
+Camel,Beast,1/8,Desert,98822be9-41b1-5873-b2d5-e907835beeb3
+Cat,Beast,0,Grassland; Urban,9d680404-3f7b-5620-9e93-2016aac5f063
+Centaur Trooper,Fey,2,Forest; Grassland,dbc3cfbb-97a1-5d88-b5f5-9afee4ec10b5
+Chain Devil,Fiend (Devil),8,Underdark; Planar,01863ee4-bc74-59f2-8976-49d2127a0453
+Chimera,Monstrosity,6,Hill; Mountain,4a402fde-fcf4-5758-8756-21cbf368bb73
+Chuul,Aberration,4,Coastal; Swamp; Underdark; Underwater,15e30cfc-e657-5565-905f-c3b60d8e6099
+Clay Golem,Construct,9,Underdark; Urban,e7846570-846a-59fc-8e3d-25cf3577068d
+Cloaker,Aberration,8,Underdark,ba19a238-0c7c-5cc7-a28b-e41349506208
+Cloud Giant,Giant,9,Mountain,00c8409b-e250-5c1a-b076-4e9c727a6bd9
+Cockatrice,Monstrosity,1/2,Forest; Grassland; Swamp,1f9d5218-1805-5be9-88f3-f650b9b238e0
+Commoner,Humanoid,0,Grassland; Urban,f689c704-c37f-50f9-ad8a-ac75f90f6b76
+Constrictor Snake,Beast,1/4,Forest; Swamp,20eb161f-acb7-5cd0-9fde-ade75e787ee7
+Copper Dragon Wyrmling,Dragon (Metallic),1,Hill; Mountain,a4922009-b21d-5e51-b64d-fd8f4eb647a5
+Couatl,Celestial,4,Forest; Planar,4799cf16-2171-5a25-bd6e-d969f08fdd47
+Crab,Beast,0,Coastal; Underwater,71d3b53b-73ba-5a65-a789-fe026efa8f9d
+Crocodile,Beast,1/2,Coastal; Swamp,3af42520-b1c9-5818-8557-bc477c0d83a4
+Cultist,Humanoid,1/8,Underdark; Urban,fe7a2562-169e-5632-ae10-354e00cacf83
+Cultist Fanatic,Humanoid,2,Underdark; Urban,8f19b404-02ea-5c15-9cb1-1d21b3e6b3be
+Darkmantle,Aberration,1/2,Underdark,eab62c30-5c2f-57ca-9970-8a437060b780
+Death Dog,Monstrosity,1,Desert; Underdark,4ac2706c-8191-568b-83d1-13ca8fb8e18f
+Deer,Beast,0,Forest; Grassland,0b61cba2-69f9-5c55-be24-d33f896e14ba
+Deva,Celestial (Angel),10,Planar,707ba69e-7fe8-5cd2-8023-adcad1cb9756
+Dire Wolf,Beast,1,Arctic; Forest; Hill,3d2f44a2-c104-5e33-9104-8a4ef835e3d6
+Djinni,Elemental (Genie),11,Desert; Planar,f0b3737d-494e-5b45-8eac-62d981fffcd6
+Doppelganger,Monstrosity,3,Underdark; Urban,a58dd0aa-ce6d-5edb-95ab-d158769302d1
+Draft Horse,Beast,1/4,Grassland; Urban,580a55cf-cb57-5d0c-9e2c-0dc809a91a2f
+Dragon Turtle,Dragon,17,Coastal; Underwater,f96e2d9b-6f4b-5ba1-95b0-21a0a782d7bb
+Dretch,Fiend (Demon),1/4,Underdark; Planar,2b36b3d6-1315-5c75-8823-b27aa2b62ae8
+Drider,Monstrosity,6,Underdark,176665ca-2b09-5d76-9c52-87be4feb2fbb
+Druid,Humanoid (Druid),2,Forest; Grassland; Hill; Swamp,1f2832e8-d5f8-56e8-87f2-2b0c2955797d
+Dryad,Fey,1,Forest,7e5e22b5-d688-512e-b62f-7750d9af46d0
+Dust Mephit,Elemental,1/2,Desert; Planar,a58660f0-3394-5482-bd7b-7ff2a82bd467
+Eagle,Beast,0,Coastal; Grassland; Hill; Mountain,6b9da330-c403-52d8-b551-b511ef6f46f1
+Earth Elemental,Elemental,5,Mountain; Underdark; Planar,d233fdd2-0fef-535b-9cb0-ffe1e424a4b5
+Efreeti,Elemental (Genie),11,Desert; Planar,47e06465-cfb6-56eb-9406-a8101c101bcc
+Elephant,Beast,4,Grassland,b38e27b3-2348-52f9-beae-eeba361a5d10
+Elk,Beast,1/4,Arctic; Forest; Grassland; Hill,1ddc5789-5617-54bb-9fbf-e5591a7d989f
+Erinyes,Fiend (Devil),12,Planar,31b3e692-6ade-56c5-9596-574bc70a7688
+Ettercap,Monstrosity,2,Forest,cea2b15e-2553-53df-948e-768d3685f41b
+Ettin,Giant,4,Hill; Mountain; Underdark,adde2b4e-02dd-5f7b-8737-8172c776e6ab
+Fire Elemental,Elemental,5,Desert; Mountain; Underdark; Planar,fbc5ee7e-fca6-5e8a-a94a-739373775271
+Fire Giant,Giant,9,Mountain; Underdark,bd14fdca-7767-5eef-a1c3-59e35ca8a063
+Flesh Golem,Construct,5,Underdark; Urban,99c536d2-2bec-59dc-91e6-f15f12f51497
+Flying Snake,Monstrosity,1/8,Desert; Forest; Swamp,4570200c-9309-596d-8566-50dcf73926d9
+Frog,Beast,0,Forest; Swamp,09a804c7-fb41-58d3-970b-8a978abfccc5
+Frost Giant,Giant,8,Arctic; Mountain,6fbbf5a0-579f-5a06-b573-0f0c72ac8cd5
+Gargoyle,Elemental,2,Mountain; Underdark; Urban,16af8f7e-e58b-5be8-8c7c-8bbb034dc933
+Gelatinous Cube,Ooze,2,Underdark,25f54c9b-b80b-51b3-a387-80f9a7c2235c
+Ghast,Undead,2,Swamp; Underdark; Urban,93b89710-068e-5a5f-b2f2-fc0fe8fbfff3
+Ghost,Undead,4,Underdark; Urban,43d8a372-8d62-5a2e-b704-b098ab344398
+Ghoul,Undead,1,Swamp; Underdark; Urban,7965ce1e-cfa9-5121-8fa7-1335ddbda42c
+Giant Ape,Beast,7,Forest; Mountain,15d91e68-ddb8-5dd3-bb1c-308862b3d0fa
+Giant Badger,Beast,1/4,Forest; Grassland; Hill,b64730db-c41a-5c73-ba93-39ec59d49054
+Giant Bat,Beast,1/4,Forest; Mountain; Underdark,7d564f56-caa3-55e8-9e7d-0ceee1a42dc9
+Giant Boar,Beast,2,Forest; Grassland; Hill,51e3ba14-05b2-5efe-aa30-32863a046154
+Giant Centipede,Beast,1/4,Desert; Forest; Swamp; Underdark,a40bdcef-8481-5cf0-8ad7-552b9ab52152
+Giant Constrictor Snake,Beast,2,Forest; Swamp,3aa0349d-8cb1-5d9c-a0af-f882e64a40ca
+Giant Crab,Beast,1/8,Coastal; Underwater,09585814-53ef-57a0-b9fb-bc8403559422
+Giant Crocodile,Beast,5,Coastal; Swamp,fb852097-cdce-5925-8d0d-8a7d1449baf9
+Giant Eagle,Celestial,1,Coastal; Grassland; Hill; Mountain,a21616ab-9dec-5bf6-a847-95ebd5ebf7ec
+Giant Elk,Celestial,2,Arctic; Forest; Grassland; Hill,4c6c149b-0af3-578b-9928-b0a02600bc29
+Giant Fire Beetle,Beast,0,Underdark,5a9d4cf0-5ecf-5d9b-835c-4683e170d77f
+Giant Frog,Beast,1/4,Forest; Swamp,0b0c7fe2-0f0b-5272-bf08-e616e1569caf
+Giant Goat,Beast,1/2,Hill; Mountain,be307730-d2de-56b6-83b1-2f09348ad3b8
+Giant Hyena,Beast,1,Desert; Grassland; Hill,10a0acd4-10b4-54c8-8991-b0ebc87b5e29
+Giant Lizard,Beast,1/4,Desert; Forest; Swamp; Underdark,a3f9cd1e-94cb-5aaf-bf4a-87973805f8c5
+Giant Octopus,Beast,1,Coastal; Underwater,111feffc-7d71-570e-b344-608ed1b0fd69
+Giant Owl,Celestial,1/4,Arctic; Forest,92b5ef9d-1462-58ba-b22e-9e86065cc7a7
+Giant Rat,Beast,1/8,Swamp; Underdark; Urban,cf86b7f1-a610-4ca3-b7f3-7ce2c9c8e111
+Giant Scorpion,Beast,3,Desert,cab27126-021a-5967-85ad-9e297a874d4f
+Giant Seahorse,Beast,1/2,Underwater,319c2ccd-bb5e-57a8-882e-57c4da593a0c
+Giant Shark,Beast,5,Underwater,9f04be29-e0f2-515a-922d-7f48c7b81b06
+Giant Spider,Beast,1,Forest; Underdark,9efd5a02-771c-5082-9007-e42df00ea543
+Giant Toad,Beast,1,Forest; Swamp,bfc3053f-9587-585b-b122-8753be0aabb8
+Giant Venomous Snake,Beast,1/4,Desert; Forest; Grassland; Swamp,e6a01980-fce9-5c92-8fdb-32a92d223c02
+Giant Vulture,Monstrosity,1,Desert; Grassland; Mountain,18a29696-1b61-5ffb-96c7-8710bc6f35e0
+Giant Wasp,Beast,1/2,Forest; Grassland; Hill,5a522c2e-275c-58a7-be31-3202b6594f32
+Giant Weasel,Beast,1/8,Forest; Grassland; Hill,87c8f08e-d329-5364-be33-b19ca62b744d
+Giant Wolf Spider,Beast,1/4,Desert; Forest; Grassland; Hill; Underdark,3eebfa9d-fce4-5e29-bbed-be8baff13519
+Gibbering Mouther,Aberration,2,Swamp; Underdark,a1010b9e-64be-51a5-9135-65b27f9fa901
+Glabrezu,Fiend (Demon),9,Planar,a7a2b871-5065-5614-956f-d2c7f923724a
+Gladiator,Humanoid,5,Urban,d83180b1-27f4-54aa-b5ee-394dca28f950
+Gnoll Warrior,Fiend,1/2,Desert; Grassland; Hill,5cf21b72-ceb2-54c5-a3e6-cb143b57a667
+Goat,Beast,0,Grassland; Hill; Mountain,a9232e75-97dd-5e1e-9731-8de15fff8072
+Goblin Boss,Fey (Goblinoid),1,Forest; Hill; Mountain; Underdark,d493d4fe-256a-52a3-8888-7836f3d236de
+Goblin Minion,Fey (Goblinoid),1/8,Forest; Hill; Mountain; Underdark,cf86b7f1-a610-4ca3-b7f3-7ce2c9c8e112
+Goblin Warrior,Fey (Goblinoid),1/4,Forest; Hill; Mountain; Underdark,01357b5a-162a-52fe-8473-5d778d596fac
+Gold Dragon Wyrmling,Dragon (Metallic),3,Forest; Grassland; Mountain,0b8db121-192e-5636-b091-e7dc2b494959
+Gorgon,Construct,5,Grassland; Hill; Mountain,c50a14e4-0732-5676-8da8-8f077575bf21
+Gray Ooze,Ooze,1/2,Swamp; Underdark,0e4b3e51-15fb-5bca-abd6-18228d18c3d3
+Green Dragon Wyrmling,Dragon (Chromatic),2,Forest,a8c8b07d-9b53-56d8-b46b-7a706518cd93
+Green Hag,Fey,3,Forest; Swamp,959ebac9-6c21-5480-aa39-e2c92a93a5e9
+Grick,Aberration,2,Forest; Underdark,d6485bb0-db7c-52b0-befa-07a736ad601e
+Griffon,Monstrosity,2,Grassland; Hill; Mountain,718919de-e7b1-5119-a0ed-f5b7861b1d1d
+Grimlock,Aberration,1/4,Underdark,51b1555b-f851-5e27-b45b-fc03e1e9c99c
+Guard,Humanoid,1/8,Urban,d34dfde3-06bb-5227-b856-9a48a6eb2443
+Guard Captain,Humanoid,4,Urban,2dd16c93-aebb-57b2-9e98-dc1d82c0f030
+Guardian Naga,Celestial,10,Forest; Underdark; Planar,c2dc0fb8-1e8c-5ff6-b3e8-9e9084c36a13
+Half-Dragon,Dragon,5,Forest; Mountain; Underdark; Urban,7cc8c514-5e04-5530-a26f-4d904feefc5e
+Harpy,Monstrosity,1,Coastal; Forest; Hill; Mountain,95420332-222f-5465-ae19-673d1e2c86e8
+Hawk,Beast,0,Forest; Grassland; Hill; Mountain,0abfae85-eee5-5b9a-93ba-4e61d800111b
+Hell Hound,Fiend,3,Mountain; Underdark; Planar,386dceae-3736-52dd-8d1a-afb5f5b5180c
+Hezrou,Fiend (Demon),8,Swamp; Planar,9833d5eb-9826-5c59-8667-52cd0a88f543
+Hill Giant,Giant,5,Grassland; Hill,f17a7ddd-9186-590e-b65a-8ea35a0b560e
+Hippogriff,Monstrosity,1,Grassland; Hill; Mountain,68328bdc-eebe-58d0-95ac-c12d4d144919
+Hippopotamus,Beast,4,Grassland; Swamp,dd07be08-2889-5916-94f3-b6d85334c24f
+Hobgoblin Captain,Fey (Goblinoid),3,Forest; Grassland; Hill; Mountain,5fe21a04-c869-5b10-9623-7a0e99665a7a
+Hobgoblin Warrior,Fey (Goblinoid),1/2,Forest; Grassland; Hill; Mountain,f9a7c542-2406-52ee-9f11-f39c3f97ce28
+Homunculus,Construct,0,Underdark; Urban,97e3dd43-407e-5191-8c32-5b98f5e6e5f8
+Horned Devil,Fiend (Devil),11,Planar,19e6371e-2579-54ee-8679-1025d70d8390
+Hunter Shark,Beast,2,Coastal; Underwater,2c3b0e74-e161-5ef5-b7e5-641fe4f4ba84
+Hydra,Monstrosity,8,Coastal; Swamp,86ebcb7d-fc8c-51a2-916a-f3057f3d31e1
+Hyena,Beast,0,Desert; Grassland,1461dc91-2884-53fd-bbe4-9586cd10874a
+Ice Devil,Fiend (Devil),14,Arctic; Planar,89d7f5a1-2e69-5a20-b176-4b29bbc17d74
+Ice Mephit,Elemental,1/2,Arctic; Planar,c29b307f-75ab-5826-a96e-c5c0ab32b139
+Imp,Fiend (Devil),1,Urban; Planar,f1943970-ae72-5ff0-bcaf-c3d8e0f1fa0f
+Incubus,Fiend,4,Urban; Planar,089c62d1-ed93-5da7-afd3-8974540e27b6
+Invisible Stalker,Elemental,6,Urban; Planar,7e30feb2-54e8-569b-be8a-574917b3ccd1
+Iron Golem,Construct,16,Underdark; Urban; Planar,e604396a-0b19-54a5-9247-d747544a75b2
+Jackal,Beast,0,Desert; Grassland,6e5e65c6-34af-5507-bf23-f9be016490f8
+Killer Whale,Beast,3,Arctic; Coastal; Underwater,f98ca9b4-d27e-5209-a07f-a5874f370cd7
+Knight,Humanoid,3,Grassland; Hill; Urban,5587ed25-8006-541b-a38e-438b698547ec
+Kobold Warrior,Dragon,1/8,Forest; Hill; Mountain; Underdark,e7af78e7-4d34-5061-9cd2-2fb7da4d5a66
+Kraken,Monstrosity (Titan),23,Underwater,90167248-edc1-5271-b9d6-782c1b4cd279
+Lamia,Fiend,4,Desert,c77ce07b-a021-5fbf-81e4-26f7b4d08136
+Lemure,Fiend (Devil),0,Planar,9eb5d5ef-7b8c-53ac-86c3-e215a2a2fced
+Lich,Undead (Wizard),21,Underdark; Planar,13f7a74a-2efe-5ce5-888a-9069a2aaf060
+Lion,Beast,1,Desert; Grassland,c0adae6a-c8b2-5588-8507-39eccd034e03
+Lizard,Beast,0,Desert; Forest; Grassland; Swamp,f78ff330-f14c-513e-b3fe-ade0c819f212
+Mage,Humanoid (Wizard),6,Urban,5dcc2a40-8fb8-587a-a090-8195b942be2d
+Magma Mephit,Elemental,1/2,Mountain; Underdark; Planar,27757ad5-ccf8-596f-99cc-4e2302b977f9
+Magmin,Elemental,1/2,Mountain; Underdark; Planar,8d9a51e0-25a7-50e4-8568-ce7f27cfc02e
+Mammoth,Beast,6,Arctic,679fcb75-d3ec-5b95-b2f1-fe35460c74b3
+Manticore,Monstrosity,3,Desert; Hill; Mountain,59947f7c-1067-558e-97fb-4b5944e38e51
+Marilith,Fiend (Demon),16,Planar,b7914972-c457-576a-b8c0-20f47ab0f281
+Mastiff,Beast,1/8,Grassland; Hill; Urban,187575ac-3406-5da6-bb30-7a473970c81d
+Medusa,Monstrosity,6,Coastal; Desert; Underdark,21a6f191-86db-5150-8d65-071f188e450c
+Merfolk Skirmisher,Elemental,1/8,Coastal; Underwater,7b37fe84-afa0-509c-8b7b-2af52fa3db43
+Merrow,Monstrosity,2,Coastal; Underwater,817c6fed-9e10-5746-a736-36f3c71ded65
+Mimic,Monstrosity,2,Underdark; Urban,51985edd-82c3-5679-ad34-a3e48134c96c
+Minotaur Skeleton,Undead,2,Underdark,38f18515-7244-55a9-bd55-e7b6ccf1ea01
+Minotaur of Baphomet,Monstrosity,3,Underdark,695febd8-8de1-5c14-b431-2d147ccde848
+Mule,Beast,1/8,Grassland; Hill; Mountain; Urban,2c93d344-4500-507c-a236-58d213a3a829
+Mummy,Undead,3,Desert; Underdark,356af5ea-293d-587b-803e-be4f24762950
+Mummy Lord,Undead (Cleric),15,Desert; Underdark,9830c711-60fc-5cb0-a022-ee77f1ed387b
+Nalfeshnee,Fiend (Demon),13,Planar,2562a19c-4ce6-5a30-af79-53e1295c0cb0
+Night Hag,Fiend,5,Forest; Swamp; Planar,8750afe1-0e7f-52db-a107-8f8f286f3bdb
+Nightmare,Fiend,3,Planar,788881fb-bc72-50f5-8a5e-55e541e1623a
+Noble,Humanoid,1/8,Urban,bd9ee08b-70b8-574a-9c3d-f6b928311b3f
+Ochre Jelly,Ooze,2,Swamp; Underdark,f42e909f-a367-541e-888f-37aa315d5cae
+Octopus,Beast,0,Coastal; Underwater,14b299a8-05f8-5c3a-9c01-0f097ffcc8e6
+Ogre,Giant,2,Forest; Hill; Mountain; Swamp,698b1a0a-c1a9-5b97-857b-34b1b5430797
+Ogre Zombie,Undead,2,Forest; Swamp; Underdark,57bd6afe-92b0-570e-9677-64a1b8dd17cc
+Oni,Fiend,7,Forest; Hill; Mountain; Urban,0ff6f367-cefd-5c30-966a-4a66163277ce
+Otyugh,Aberration,5,Swamp; Underdark; Urban,b9fad7b2-17f0-5c27-b353-010d71f4ec2d
+Owl,Beast,0,Arctic; Forest; Hill,c00eaaab-c712-5257-a671-f559c42d1712
+Owlbear,Monstrosity,3,Forest,491ea42d-5ae1-54ba-8c71-ee70c854d043
+Panther,Beast,1/4,Forest; Grassland,ae3e5f1e-9fff-56e6-befe-b17219d60ec3
+Pegasus,Celestial,2,Forest; Grassland; Hill; Planar,8e2ac556-865e-56f8-8ccf-c4fb78860722
+Phase Spider,Monstrosity,3,Forest; Underdark; Planar,890c7a33-f887-5b1f-8148-84fcb14eda63
+Piranha,Beast,0,Swamp; Underwater,a952f5b3-b811-54cb-a947-e9dd88d47190
+Pirate,Humanoid,1,Coastal; Urban,5a4700a4-69e6-5e3b-a833-240f8dcad72c
+Pirate Captain,Humanoid,6,Coastal; Urban,a48f9d38-a74b-59f8-b549-ed407e22c38e
+Pit Fiend,Fiend (Devil),20,Planar,d3229875-15ed-52ef-b261-b6daaa01de6e
+Planetar,Celestial (Angel),16,Planar,959e1578-1136-54c1-8253-f50f6201fb1b
+Plesiosaurus,Beast (Dinosaur),2,Coastal; Underwater,4c6beca0-532c-563b-b681-15ea96db5ca4
+Polar Bear,Beast,2,Arctic,d24279ad-8573-52ed-b3df-e8182ba7d362
+Pony,Beast,1/8,Grassland; Hill; Urban,44075300-c504-5def-8cd3-02a610bf85e4
+Priest,Humanoid (Cleric),2,Urban,b3fc6a0c-22e6-5e9e-b383-afaad64e7470
+Priest Acolyte,Humanoid (Cleric),1/4,Urban,4fb3701c-93e2-5b11-9e48-77d953e271a1
+Pseudodragon,Dragon,1/4,Forest; Mountain; Urban,10bce32c-8033-5cf7-acbe-d75346c6e1ad
+Pteranodon,Beast (Dinosaur),1/4,Coastal; Grassland; Mountain,c2608fc2-0c0e-5bb1-9636-d2bb2ae9e242
+Purple Worm,Monstrosity,15,Desert; Underdark,0e997d52-4bb5-5de8-a0b6-a01937b30ca6
+Quasit,Fiend (Demon),1,Underdark; Urban; Planar,a49e8d67-4512-5944-ab48-db9067d38088
+Rakshasa,Fiend,13,Urban; Planar,b09500f3-9908-573e-9a2b-281969423907
+Rat,Beast,0,Swamp; Underdark; Urban,2fe91d69-5d93-5396-b8bd-3171c8caafd9
+Raven,Beast,0,Forest; Hill; Mountain; Urban,1dda5690-b78a-5242-8b31-0352ce324b10
+Red Dragon Wyrmling,Dragon (Chromatic),4,Hill; Mountain,8a651012-3bfe-5b76-a356-212e3fddf123
+Reef Shark,Beast,1/2,Coastal; Underwater,d6f946f4-63af-5fec-bacf-d884bff02275
+Remorhaz,Monstrosity,11,Arctic,05736cbe-7de4-5eb2-a6c1-2927e922edb8
+Rhinoceros,Beast,2,Grassland,127e915a-a466-5a2f-88e2-82912cd069d6
+Riding Horse,Beast,1/4,Grassland; Urban,e42bfdc8-9437-5768-b242-2bbb197e87be
+Roc,Monstrosity,11,Coastal; Desert; Mountain,ee9a0543-34f8-50a5-beaa-e0ca6a0d0cdc
+Roper,Aberration,5,Underdark,3e874f62-3119-55fd-85dd-5042f3ea9823
+Rust Monster,Monstrosity,1/2,Underdark,8e3db616-cdb7-513f-a541-395048816f61
+Saber-Toothed Tiger,Beast,2,Arctic; Forest; Mountain,e83f67af-1ea6-5e8c-955e-b895dfdb8f0c
+Sahuagin Warrior,Fiend,1/2,Coastal; Underwater,7d32f06e-9625-5ab5-ad6b-ddc16bf0f5ce
+Salamander,Elemental,5,Underdark; Planar,478a3332-b33f-5cf2-a66c-f75f4e4fc27e
+Satyr,Fey,1/2,Forest; Planar,9060d2f8-8490-5a1b-a233-51ac80aec48c
+Scorpion,Beast,0,Desert,d7fc4ecc-4fe5-5268-8714-8a7d966f93b4
+Scout,Humanoid,1/2,Desert; Forest; Grassland; Hill; Mountain; Swamp,cfa26468-d9fb-526b-aa52-e60939c38d0c
+Sea Hag,Fey,2,Coastal; Underwater,b3738910-24b8-5157-bfc1-4c057bb25068
+Seahorse,Beast,0,Underwater,37c38dd1-926d-5a01-a06b-cae34431661e
+Shadow,Undead,1/2,Underdark; Urban,33e47856-8736-5bef-ba81-b3b6c1be183a
+Shambling Mound,Plant,5,Forest; Swamp,1bbac66d-7eb3-5828-8cc7-baea7daa9e99
+Shield Guardian,Construct,7,Underdark; Urban,2ccc0bdc-34f3-5af3-a1b7-ab5a69d57cd8
+Shrieker Fungus,Plant,0,Underdark,4b18708b-da4b-5c70-83e0-148c6e84c3a5
+Silver Dragon Wyrmling,Dragon (Metallic),2,Arctic; Mountain,c8c29ecc-f583-5119-8430-ded269e1ceb7
+Skeleton,Undead,1/4,Desert; Underdark; Urban,cf86b7f1-a610-4ca3-b7f3-7ce2c9c8e113
+Solar,Celestial (Angel),21,Planar,d6f9c7e9-4857-5303-aec7-1f58da8fdf1f
+Specter,Undead,1,Underdark; Urban,63fc0640-3ae9-5630-b21d-5a4af1d5c603
+Sphinx of Lore,Celestial,11,Desert; Planar,f5540917-d346-5c7b-93da-37815b548376
+Sphinx of Valor,Celestial,17,Desert; Planar,981f298d-1518-5ab6-8597-6704cdb39d03
+Sphinx of Wonder,Celestial,1,Desert; Urban; Planar,c5f45f57-26bb-5b55-8057-6b19af624e92
+Spider,Beast,0,Forest; Swamp; Underdark; Urban,81b51f09-2265-5aee-897e-4e4e3d595166
+Spirit Naga,Fiend,8,Forest; Underdark,213bb4bb-f569-57f2-97b1-356a9e52fd82
+Sprite,Fey,1/4,Forest,a00eb06b-4da7-5026-92a8-c775725b2515
+Spy,Humanoid,1,Urban,36e94e00-89e6-5fce-aa56-5a10cd34828c
+Steam Mephit,Elemental,1/4,Coastal; Swamp; Planar,c7a59e5b-729f-5788-b70f-688bb48b2653
+Stirge,Monstrosity,1/8,Forest; Swamp; Underdark,551c9080-f732-5695-8058-d1843958d7a5
+Stone Giant,Giant,7,Hill; Mountain; Underdark,23863e5d-9888-5839-b56b-8bbda8c2926f
+Stone Golem,Construct,10,Mountain; Underdark; Urban,aaea2823-febf-57b6-b06d-51eb62ef7fb6
+Storm Giant,Giant,13,Coastal; Mountain; Underwater,048742fc-2bbf-5dcc-b2c0-8e76f6843221
+Succubus,Fiend,4,Urban; Planar,ef3a0086-6b61-5483-bffc-c536f3c5ea2a
+Swarm of Bats,Swarm of Tiny Beasts,1/4,Forest; Underdark; Urban,db6a76f9-2509-5412-afd8-f439ec2a9c84
+Swarm of Crawling Claws,Swarm of Tiny Undead,3,Underdark; Urban,412b18ab-55f3-5515-ac0b-2067d060c985
+Swarm of Insects,Swarm of Tiny Beasts,1/2,Desert; Forest; Grassland; Swamp,ecb89361-4d9a-5c08-ba11-2e3543e9010c
+Swarm of Piranhas,Swarm of Tiny Beasts,1,Swamp; Underwater,4c055205-1950-536b-bbad-5eb881ee3894
+Swarm of Rats,Swarm of Tiny Beasts,1/4,Swamp; Underdark; Urban,697c1581-e4c1-5b51-8dd5-6d49d6d064f1
+Swarm of Ravens,Swarm of Tiny Beasts,1/4,Forest; Hill; Urban,28b1d887-9dbc-5521-874c-0b887e4655be
+Swarm of Venomous Snakes,Swarm of Tiny Beasts,2,Desert; Forest; Swamp,1a61f7c3-282e-53d0-b939-11fa42f59c52
+Tarrasque,Monstrosity (Titan),30,Grassland; Hill; Urban,230c36d7-295e-5e6c-b144-5c9a9b35f6f0
+Tiger,Beast,1,Forest; Grassland,0dd50402-e6a0-5169-8b8f-2e0243bee379
+Tough,Humanoid,1/2,Urban,3c7f443c-40e5-5a25-a80f-ee8d551e29fa
+Tough Boss,Humanoid,4,Urban,5bcb8fa8-28f7-51dd-9858-0a7e697175c5
+Treant,Plant,9,Forest,863d9d12-11bb-5dc4-8edc-c3d3a9fc20b0
+Triceratops,Beast (Dinosaur),5,Forest; Grassland,4999a1d9-d355-54ef-ac87-b246cd971e36
+Troll,Giant,5,Arctic; Forest; Hill; Mountain; Swamp,3f29b9e4-e81e-56aa-87d5-36decdc620d4
+Troll Limb,Giant,1/2,Arctic; Forest; Hill; Mountain; Swamp,46991c0e-a6a9-5366-9d07-30095c1beca3
+Tyrannosaurus Rex,Beast (Dinosaur),8,Forest; Grassland,6fb716f2-54d9-50e7-a4cd-953f52974f4e
+Unicorn,Celestial,5,Forest,10d7585e-6ae6-5cdf-aee1-417895152743
+Vampire,Undead,13,Mountain; Underdark; Urban,b6ccc5af-78f2-5692-b5a5-0b881e65401f
+Vampire Familiar,Humanoid,3,Underdark; Urban,64957349-c154-580a-8cff-c6aafb9e6fc3
+Vampire Spawn,Undead,5,Underdark; Urban,c22f9d87-bf48-5168-98b9-f127c5c7f54b
+Venomous Snake,Beast,1/8,Desert; Forest; Grassland; Swamp,6263e3bb-457f-5b6f-bf49-99a9bca481e0
+Violet Fungus,Plant,1/4,Underdark,62517ee5-255d-5ed5-806f-3fbb1e20d5ba
+Vrock,Fiend (Demon),6,Planar,8522a173-ae7e-57b6-9b43-4319f9375e2a
+Vulture,Beast,0,Desert; Grassland,55d36061-3147-58a3-a256-d3207bfb06b2
+Warhorse,Beast,1/2,Grassland; Urban,5c47c0ce-b84d-5429-8c54-758997f22667
+Warhorse Skeleton,Undead,1/2,Grassland; Underdark; Urban,9cd5ab4a-a995-503f-b721-7d26767acce4
+Warrior Infantry,Humanoid,1/8,Grassland; Hill; Urban,9f2089b8-9aee-5c21-a30c-c275fac5c467
+Warrior Veteran,Humanoid,3,Grassland; Hill; Urban,f5ca9a4d-c46b-5c69-87cb-37e66fd243a2
+Water Elemental,Elemental,5,Coastal; Swamp; Underwater; Planar,63c413f8-d680-574f-ad66-21b8cb5233a0
+Weasel,Beast,0,Forest; Grassland; Hill,fce83b2c-8457-5911-9fb5-2d80b7ba5ca8
+Werebear,Monstrosity (Lycanthrope),5,Arctic; Forest; Hill,787e9201-566d-59e1-8790-1be533c3db00
+Wereboar,Monstrosity (Lycanthrope),4,Forest; Grassland,8bcf3e30-9333-51fc-a76f-e2068299144d
+Wererat,Monstrosity (Lycanthrope),2,Underdark; Urban,52f73373-ffb2-575b-bf8d-e2a8880ab443
+Weretiger,Monstrosity (Lycanthrope),4,Forest; Grassland,2e034533-6983-593c-83aa-8f1e7e54ecd5
+Werewolf,Monstrosity (Lycanthrope),3,Forest; Hill; Urban,b6f40b36-61d4-5081-a8af-20c10c127a0c
+White Dragon Wyrmling,Dragon (Chromatic),2,Arctic; Mountain,9aeb801f-2c4a-5446-af52-b49ab7d27615
+Wight,Undead,3,Arctic; Hill; Underdark; Urban,8a0538f1-66c4-53d3-809e-7e04207e56d0
+Will-o’-Wisp,Undead,2,Forest; Swamp,f3945545-af0c-56d7-a7b8-38a6689de98d
+Winter Wolf,Monstrosity,3,Arctic,afadd586-49e2-5b9b-b4fe-8c8f3a354a24
+Wolf,Beast,1/4,Arctic; Forest; Grassland; Hill,2ef141ed-3a8a-534c-915e-cad643c8a4eb
+Worg,Fey,1/2,Forest; Grassland; Hill,f7fd44e0-4a7b-53e1-a01b-d6f2443f9159
+Wraith,Undead,5,Underdark; Urban; Planar,a744fef6-b2e2-502a-828f-260234e22b94
+Wyvern,Dragon,6,Forest; Hill; Mountain,41fc962e-bb23-55bf-ac91-706571afb9bb
+Xorn,Elemental,5,Underdark; Planar,b7a23961-3135-5fe2-baa1-a0affffb3553
+Young Black Dragon,Dragon (Chromatic),7,Swamp,ece442c8-feb7-5314-95e6-650f5b9d9344
+Young Blue Dragon,Dragon (Chromatic),9,Coastal; Desert,525e9a32-386d-5b02-b428-f1958b3149d6
+Young Brass Dragon,Dragon (Metallic),6,Desert,c649b27d-4439-5f27-bcc1-c4baea997e77
+Young Bronze Dragon,Dragon (Metallic),8,Coastal; Underwater,d351c426-5fbb-5298-80f4-b65a26b97cdb
+Young Copper Dragon,Dragon (Metallic),7,Hill; Mountain,9388a55a-4bbc-520b-a3a0-65aadda847f9
+Young Gold Dragon,Dragon (Metallic),10,Forest; Grassland; Mountain,a9c45f2e-ea4b-51e4-a653-4dcb591c980e
+Young Green Dragon,Dragon (Chromatic),8,Forest,3e3e4d8a-e8cc-52ad-8922-3cd0e0d8179b
+Young Red Dragon,Dragon (Chromatic),10,Hill; Mountain,38d7bc88-44aa-521c-bc06-9786680d04bc
+Young Silver Dragon,Dragon (Metallic),9,Arctic; Mountain,50c84c80-c5bc-5f87-9649-45af509d9408
+Young White Dragon,Dragon (Chromatic),6,Arctic; Mountain,04d04837-5c49-5b9a-8c9a-8b1b5f9ee065
+Zombie,Undead,1/4,Swamp; Underdark; Urban,cf86b7f1-a610-4ca3-b7f3-7ce2c9c8e114
