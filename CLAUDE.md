@@ -35,6 +35,10 @@ A browser-based, searchable Monster Manual for Dungeon Masters. It ships a read-
 - **Artwork settings** are in `localStorage` under `dnd-monster-reference-artwork-settings-v1`.
 - `?catalog=preview` loads `public/data/published-monsters-preview.json` instead of the real catalog (that file is gitignored).
 
+## Importing custom monsters
+
+`src/models/customImport.ts` (logic) and `src/CustomImportDialog.tsx` (UI). Choosing a file on the configuration screen opens a preview: **Add** (default) or **Replace** the custom library. Add finds duplicates — same UUID, or same name (case-insensitive) — and lets the user pick per monster: keep original, overwrite with new (keeps the original's UUID so artwork and battle-tracker encounters still match), or keep both (new UUID, name numbered "Name (2)"). Files with invalid records, repeated UUIDs or published UUIDs are rejected whole. **Delete all custom monsters** (small button) asks for confirmation and offers an export first.
+
 ## Security rules
 
 - The image API token is encrypted in the browser (PBKDF2-SHA-256, 310,000 iterations → AES-256-GCM) and only decrypted when the user enters their password to generate.
