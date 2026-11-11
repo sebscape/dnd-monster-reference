@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="robots" content="noindex" />
-<title>Monster Reference Bridge</title>
+<title>Critter Codex Bridge</title>
 </head>
 <body>
 <!--
-  Storage bridge for companion apps (see dnd-battle-tracker DESIGN.md).
+  Storage bridge for companion apps (see the Scrap Sheet repo's DESIGN.md).
   A companion app loads this page in a hidden iframe and asks for data with
   postMessage. The page is READ-ONLY: it never writes to this site's storage.
   Only the origins listed in ALLOWED_ORIGINS get an answer.
@@ -19,7 +19,8 @@
   const BRIDGE_VERSION = 1;
   const SCHEMA_VERSION = "1.2.0";
   const ALLOWED_ORIGINS = new Set([
-    "https://dnd-battle-tracker.c2ma.com",
+    "https://scrap-sheet.c2ma.com",
+    "https://dnd-battle-tracker.c2ma.com", // Scrap Sheet's old address; remove once it redirects
     "http://localhost:5174", // battle tracker dev server
   ]);
   // Must match src/App.tsx and src/MonsterArtwork.tsx.
