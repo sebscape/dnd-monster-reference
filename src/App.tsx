@@ -5,6 +5,8 @@ import type { Monster, MonsterCatalog, NamedFeature } from "./models/monster";
 import { ABILITY_KEYS, isMonster, newMonster, SCHEMA_VERSION } from "./models/monster";
 import CustomImportDialog, { PurgeDialog } from "./CustomImportDialog";
 import { describeSummary, mergeImport, readImportFile } from "./models/customImport";
+import MoveData, { MovedNotice } from "./MoveData";
+import { OLD_HOST, OLD_ORIGIN, thisSiteIsEmpty } from "./models/moveData";
 
 const LOCAL_KEY = "dnd-monster-reference-custom-v1";
 interface ArtworkEntry { monster_id: string; image_url: string; creator: string; license: string; license_url: string; source_url: string; }
@@ -106,6 +108,8 @@ function Detail({ monster, artwork, onEdit, onCopy, onDelete }: { monster: Monst
 }
 export default function App() {
   const [showConfiguration, setShowConfiguration] = useState(false);
+  // Offered once per visit on the new address while nothing is saved here yet.
+  const [showMoveHint, setShowMoveHint] = useState(() => location.origin !== OLD_ORIGIN && !import.meta.env.DEV && thisSiteIsEmpty());
   useEffect(() => { window.scrollTo({ top: 0, left: 0, behavior: "instant" }); }, [showConfiguration]);
   const [published, setPublished] = useState<Monster[]>([]);
   const [artwork, setArtwork] = useState<ArtworkEntry[]>([]);
@@ -188,7 +192,9 @@ export default function App() {
     setPurging(false); setImportMessage("Deleted all " + n + " custom monster" + (n === 1 ? "" : "s") + "."); setError("");
   }
   return <main>
-    <header><div className="app-brand"><img className="app-brand-logo" src="/images/monster-reference-logo.png" alt="Monster Reference mascot logo" /><div><h1>D&D Monster Reference</h1><p>Published catalog + private custom monsters</p></div></div><div style={{ display: "flex", alignItems: "center", gap: 16 }}><span className="count">{published.length} published · {custom.length} custom</span><button type="button" aria-label={showConfiguration ? "Return to monsters" : "App Configuration"} title={showConfiguration ? "Return to monsters" : "App Configuration"} aria-pressed={showConfiguration} onClick={() => { setShowConfiguration(v => !v); setEditing(null); }} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: 8, width: 40, height: 40 }}><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06-1.87 1.87-.06-.06A1.7 1.7 0 0 0 16 18.4a1.7 1.7 0 0 0-1 .98V21h-6v-1.62a1.7 1.7 0 0 0-1-.98 1.7 1.7 0 0 0-1.87.34l-.06.06-1.87-1.87.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.98-1H2v-4h1.62a1.7 1.7 0 0 0 .98-1 1.7 1.7 0 0 0-.34-1.87L4.2 7.07 6.07 5.2l.06.06A1.7 1.7 0 0 0 8 5.6a1.7 1.7 0 0 0 1-.98V3h6v1.62a1.7 1.7 0 0 0 1 .98 1.7 1.7 0 0 0 1.87-.34l.06-.06 1.87 1.87-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 .98 1H22v4h-1.62a1.7 1.7 0 0 0-.98 1Z"/></svg></button></div></header>
+    <header><div className="app-brand"><img className="app-brand-logo" src="/images/logo.webp" alt="" width="512" height="512" /><div><h1>Critter Codex</h1><p>A 5E-compatible monster reference</p></div></div><div style={{ display: "flex", alignItems: "center", gap: 16 }}><span className="count">{published.length} published · {custom.length} custom</span><button type="button" aria-label={showConfiguration ? "Return to monsters" : "App Configuration"} title={showConfiguration ? "Return to monsters" : "App Configuration"} aria-pressed={showConfiguration} onClick={() => { setShowConfiguration(v => !v); setEditing(null); }} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: 8, width: 40, height: 40 }}><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06-1.87 1.87-.06-.06A1.7 1.7 0 0 0 16 18.4a1.7 1.7 0 0 0-1 .98V21h-6v-1.62a1.7 1.7 0 0 0-1-.98 1.7 1.7 0 0 0-1.87.34l-.06.06-1.87-1.87.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.98-1H2v-4h1.62a1.7 1.7 0 0 0 .98-1 1.7 1.7 0 0 0-.34-1.87L4.2 7.07 6.07 5.2l.06.06A1.7 1.7 0 0 0 8 5.6a1.7 1.7 0 0 0 1-.98V3h6v1.62a1.7 1.7 0 0 0 1 .98 1.7 1.7 0 0 0 1.87-.34l.06-.06 1.87 1.87-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 .98 1H22v4h-1.62a1.7 1.7 0 0 0-.98 1Z"/></svg></button></div></header>
+    <MovedNotice />
+    {!showConfiguration && showMoveHint && <p className="moved-notice" role="status">Used this app at {OLD_HOST}? <button type="button" onClick={() => setShowConfiguration(true)}>Bring over my data</button> <button type="button" onClick={() => setShowMoveHint(false)}>Not now</button></p>}
     {!showConfiguration && <div className="toolbar"><input aria-label="Search monsters" placeholder="Search name, type, CR, tags…" value={query} onChange={e => setQuery(e.target.value)} /></div>}
     {showConfiguration ? <ArtworkConfiguration
       onClose={() => setShowConfiguration(false)}
@@ -220,6 +226,6 @@ export default function App() {
       onReplace={() => finishImport(pendingImport.monsters, describeSummary({ added: 0, overwritten: 0, keptBoth: 0, skipped: 0, replaced: pendingImport.monsters.length }))}
       onAdd={choices => { const { monsters, summary } = mergeImport(custom, pendingImport.monsters, choices); finishImport(monsters, describeSummary(summary)); }} />}
     {purging && <PurgeDialog count={custom.length} onExport={exportCustom} onCancel={() => setPurging(false)} onConfirm={purgeCustom} />}
-    <footer>Custom records are saved in this browser. Export custom JSON regularly for backup. Published definitions remain read-only.</footer>
+    <footer><p>Custom records are saved in this browser. Export custom JSON regularly for backup. Published definitions remain read-only.</p><p>This work includes material from the System Reference Document 5.2.1 ("SRD 5.2.1") by Wizards of the Coast LLC, available at <a href="https://www.dndbeyond.com/srd">https://www.dndbeyond.com/srd</a>. The SRD 5.2.1 is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/legalcode">Creative Commons Attribution 4.0 International License</a>.</p></footer>
   </main>;
 }

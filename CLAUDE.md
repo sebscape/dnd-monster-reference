@@ -6,6 +6,14 @@ Context for AI assistants and new contributors. Keep this current when architect
 
 A browser-based, searchable Monster Manual for Dungeon Masters. It ships a read-only catalog of the 330 monsters from the D&D **SRD 5.2.1** (CC BY 4.0) and lets the DM create private custom (homebrew) monsters and attach artwork to any monster.
 
+## Name and addresses (renamed November 2026)
+
+- The app is **Critter Codex** — "a 5E-compatible monster reference" — at https://critter-codex.c2ma.com. Its companion is **Scrap Sheet** (formerly dnd-battle-tracker) at https://scrap-sheet.c2ma.com.
+- **Never put "D&D" or "Dungeons & Dragons" in names, titles, logos or headings.** They are Wizards of the Coast trademarks, which the SRD's CC BY licence does not cover. "5E-compatible" and the SRD attribution line in the footer are the only references.
+- Old address: https://dnd-monster-ref.c2ma.com. The GitHub repo may still be named `dnd-monster-reference` until it is renamed.
+- **Storage keys keep the old `dnd-monster-reference-…` names on purpose.** Renaming them would lose users' data.
+- **Moving data from the old address:** browser storage belongs to one address. `public/move-data.html` (served from the old address, read-only, answers only the new origin), `src/models/moveData.ts` and `src/MoveData.tsx` copy custom monsters, artwork, style references and artwork settings into the new address from App Configuration. Remove all three, and the old tracker origin in `bridge.html`, once the old addresses redirect.
+
 ## Stack
 
 - React 18 + TypeScript, built with Vite (`npm run dev`, `npm run build`, `npm run preview`)
@@ -67,7 +75,7 @@ A browser-based, searchable Monster Manual for Dungeon Masters. It ships a read-
 
 ## Deployment
 
-- **Live** at https://dnd-monster-ref.c2ma.com, hosted on the owner's Netlify account (project `dnd-monster-reference`) and auto-deployed from `main` on GitHub. Pushing to `main` deploys to production.
+- **Live** at https://critter-codex.c2ma.com, hosted on the owner's Netlify account (project `dnd-monster-reference`) and auto-deployed from `main` on GitHub. Pushing to `main` deploys to production.
 - The app is deployed independently of the C2MA homepage and should stay that way.
 - The artwork function needs no Netlify environment variables: the user's API token is sent per request from the browser.
 - Netlify settings live in the dashboard (no `netlify.toml`): build `npm run build`, publish `dist`, functions `netlify/functions`.
@@ -88,7 +96,7 @@ A browser-based, searchable Monster Manual for Dungeon Masters. It ships a read-
 
 ## Known issues and priorities (as of 2026-11-05)
 
-1. **HTTPS certificate (verify).** The site is live, but Netlify earlier reported a Let's Encrypt provisioning failure for `dnd-monster-ref.c2ma.com`. Confirm the certificate is active in Netlify → Domain management.
+1. **HTTPS certificate (verify).** The site is live, but Netlify earlier reported a Let's Encrypt provisioning failure for `critter-codex.c2ma.com`. Confirm the certificate is active in Netlify → Domain management.
 2. **Git workflow (high).** Edits have been made both on the Mac and directly on GitHub, causing divergence and many merge commits. Pull before starting work; never force-push over other commits.
 3. **Hosted AI generation (medium).** Verify the Netlify Function and the encrypted-token flow on the live site.
 4. **Build verification (medium).** Some commits were made on GitHub without a local production build.

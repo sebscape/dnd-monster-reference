@@ -1,3 +1,4 @@
+import MoveData from "./MoveData";
 import { useEffect, useState } from "react";
 
 import { encryptToken, loadSettings, saveSettings, type Settings } from "./artworkSettings";
@@ -124,6 +125,7 @@ export default function ArtworkConfiguration({ onClose, onNewMonster, onExportCu
     </div>
     {customMessage && <p className="success" role="status">{customMessage}</p>}
     {customError && <p className="error" role="alert">{customError}</p>}
+    <MoveData />
     <p className="muted">Configure artwork generation preferences. Generation requests are sent only when you click Generate AI artwork on a monster.</p>
     <div className="fields">
       <label>AI Provider<select value={settings.provider} onChange={e => setSettings(s => ({ ...s, provider: e.target.value }))}><option value="OpenAI">OpenAI</option><option value="Other">Other (future integration)</option></select></label>

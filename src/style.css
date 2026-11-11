@@ -78,3 +78,13 @@ label.radio.inline{align-items:center;gap:6px;font-size:14px}label.radio.inline 
 .tag{align-self:flex-start;font-size:11px;font-weight:600;padding:1px 6px;border-radius:4px;background:#334155;color:#c8d6e8}.tag.new{background:#1d3b2c;color:#9be3b4}
 .duplicate-choices{display:flex;gap:16px;flex-wrap:wrap}
 @media(max-width:600px){.duplicate-compare{grid-template-columns:1fr}.actions .small-button.danger{margin-left:0}}
+
+/* One-time move from the old web address (remove with MoveData once the old address redirects). */
+.moved-notice{border:1px solid #93c5fd;background:#22344d;border-radius:8px;padding:10px 14px;margin:0 0 18px}
+.moved-notice a{color:#9ec5fe}
+.moved-notice button{padding:5px 10px;margin-left:8px}
+.move-data p{margin:8px 0}
+.move-warning{color:#fde68a}
+.move-done{color:#bbf7d0}
+.move-actions{display:flex;gap:10px;flex-wrap:wrap}
+footer a{color:#9ec5fe}
